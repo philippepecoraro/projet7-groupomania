@@ -1,16 +1,15 @@
-const groupomania = require("../models")
-//const { article } = require("../models");
-const Comment = groupomania.comment;
-const User = groupomania.user;
-const Role = groupomania.role;
+const db = require("../models")
+const Comment = db.comment;
+const User = db.user;
+
 
 exports.createComment = (req, res) => {
-    const { text, ArticleId, UserId } = req.body
-    if (text && ArticleId && UserId) {
+    const { text, articleId, userId } = req.body
+    if (text && articleId && userId) {
         Comment.create({
             text: text,
-            ArticleId: ArticleId,
-            UserId: UserId
+            articleId: articleId,
+            userId: userId
         })
             .then((data) => {
                 res.status(201).send(data)
@@ -22,7 +21,7 @@ exports.createComment = (req, res) => {
 }
 exports.deleteComment = (req, res) => {
     let commentId = req.params.id
-    let userIdForDelete = req.UserId
+    let userIdForDelete = req.userId
 
     User.findOne({
         where: { id: userIdForDelete },
@@ -77,10 +76,10 @@ exports.deleteComment = (req, res) => {
 }
 
 exports.findAllComments = (req, res) => {
-    const text = req.query.text;
-    var condition = text ? { text: { [Op.like]: `%${text}%` } } : null;
+    const title = req.query.title;
+    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-    Comment.findAll({ where: condition })
+    Comment.findAll({ where: condition, include: User })
         .then(data => {
             res.send(data);
         })

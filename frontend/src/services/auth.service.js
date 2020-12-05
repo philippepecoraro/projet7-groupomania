@@ -10,16 +10,17 @@ class AuthService {
                 password: user.password
             })
             .then(response => {
+                console.log('response:', response);
                 if (response.data.accessToken) {
-                    localStorage.setItem('user', JSON.stringify(response.data));
+                    sessionStorage.setItem('user', JSON.stringify(response.data));
                 }
-
                 return response.data;
             });
     }
 
     logout() {
-        localStorage.removeItem('user');
+        sessionStorage.removeItem('user');
+        alert("You will be disconnected");
     }
 
     register(user) {
@@ -29,6 +30,16 @@ class AuthService {
             email: user.email,
             password: user.password
         });
+    }
+
+    updateName(id, user) {
+        return axios.put(API_URL + 'signupdate/' + id, {
+            firstname: user.firstname,
+            lastname: user.lastname,
+        });
+    }
+    deleteUser(id) {
+        return axios.delete(API_URL + id)
     }
 }
 

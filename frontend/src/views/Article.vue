@@ -1,157 +1,140 @@
 <template>
-  <div v-if="currentArticle" class="edit-form">
-    <h4>Article</h4>
-    <form>
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input type="text" class="form-control" id="title"
-          v-model="currentArticle.title"
-        />
-      </div>
-      <div class="form-group">
-        <label for="description">Description</label>
-        <input type="text" class="form-control" id="description"
-          v-model="currentArticle.description"
-        />
-      </div>
-       <div class="form-group">
-        <label for="text">Text</label>
-        <textarea
-          class="form-control"
-          id="text"          
-          v-model="currentArticle.text"
-          name="text"
-        ></textarea>
-      </div>
-
-
-      <div class="form-group">
-        <label><strong>Status:</strong></label>
-        {{ currentArticle.published ? "Published" : "Pending" }}
-      </div>
-    </form>
-
-    <button class="badge badge-primary mr-2"
-      v-if="currentArticle.published"
-      @click="updatePublished(false)"
-    >
-      UnPublish
-    </button>
-    <button v-else class="badge badge-primary mr-2"
-      @click="updatePublished(true)"
-    >
-      Publish
-    </button>
-
-    <button class="badge badge-danger mr-2"
-      @click="deleteArticle"
-    >
-      Delete
-    </button>
-
-    <button type="submit" class="badge badge-success"
-      @click="updateArticle"
-    >
-      Update
-    </button>
-    <p>{{ message }}</p>
-
-  <div v-if="currentArticle">
-        <h4>Article</h4>
-        <div>
-          <p><strong>Title:</strong> {{ currentArticle.title }}</p>
+  <div class="submit-form text-center">
+    <h4>Comment</h4>
+      <div v-if="!submitted">        
+        <div class="form-group col-md-12">
+         <label for="text">Text</label>
+         <textarea
+           class="form-control"
+           id="text"          
+           v-model="comment.text"
+           name="text"
+           placeholder="Enter your text"
+         >
+          </textarea>    
+         <div class="form-group col-md-12 text-left">
+         <button @click="saveComment" class="btn btn-success">       
+          Submit</button> 
+         </div>                 
         </div>
-        <div>
-          <p><strong>Description:</strong> {{ currentArticle.description }}</p>
+      </div>     
+      <div v-else>
+        <h4>You submitted successfully!</h4>
+        <button class="btn btn-success" @click="newComment">Add Comment</button>
+      </div>       
+        <div class="col-md-12 text-center">
+          <div v-if="currentArticle" class="edit-form">
+            <div class="text-center">
+            <h4>Article</h4>
+            </div>
+            <div>
+              <p><strong>Title:</strong><br/> 
+              {{ currentArticle.title }}</p>
+            </div>
+            <div>
+              <p><strong>Description:</strong><br/>
+               {{ currentArticle.description }}</p>
+            </div>
+            <div>
+              <p><strong>Texte</strong><br/>
+              {{ currentArticle.text}}</p>
+            </div>
+            <div>
+              <p><strong>Article Id</strong><br/>
+              {{ currentArticle.id}}</p>
+            </div>
+            <div>
+              <p><strong>Article userId</strong><br/>
+              {{ currentArticle.userId}}</p>
+            </div>           
+            <div class="text-center">
+              <button class="badge badge-danger mr-2"
+              @click="deleteArticle"
+              >
+              Delete Article
+              </button> 
+            </div> 
+          </div>
         </div>
-        <div>
-          <p><strong>Texte</strong>{{ currentArticle.texte}}</p>
-        </div>
-
-        <a class="badge badge-warning"
-          :href="'/articles/' + currentArticle.id"
-        >
-          Edit
-        </a>
-      </div>
-
-  </div>
-
-  <div v-else>
-    <br />
-    <p>Please click on a Article1...</p>
   </div> 
-
 </template>
 
 <script>
 import ArticleDataService from "../services/user.service";
 
 export default {
-  name: "article",
+  name: "article-comment",
   data() {
     return {
+      comment: {      
+        text: "",
+        articleId: "",
+        userId: ""
+      },
       currentArticle: null,
-      message: ''
+      message: '',
+      submitted: false     
     };
+  },
+  computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
   },
   methods: {
     getArticle(id) {
       ArticleDataService.get(id)
         .then(response => {
           this.currentArticle = response.data;
-          console.log(response.data);
+          console.log('response.data', response.data);
         })
         .catch(e => {
           console.log(e);
         });
     },
-
-    updatePublished(status) {
-      var data = {
-        id: this.currentArticle.id,
-        title: this.currentArticle.title,
-        description: this.currentArticle.description,
-        published: status
-      };
-
-      ArticleDataService.update(this.currentArticle.id, data)
-        .then(response => {
-          this.currentArticle.published = status;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    updateArticle() {
-      ArticleDataService.update(this.currentArticle.id, this.currentArticle)
-        .then(response => {
-          console.log(response.data);
-          this.message = 'The article was updated successfully!';
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
+  
     deleteArticle() {
       ArticleDataService.delete(this.currentArticle.id)
         .then(response => {
           console.log(response.data);
-          this.$router.push({ name: "articles" });
+          this.$router.push('/home');
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+      saveComment() {
+      const data = {
+        text: this.comment.text,
+        articleId: this.currentArticle.id,     
+        userId: this.currentUser.id       
+      };
+
+    if (this.comment.text) {
+      ArticleDataService.createComment(data)
+        .then(response => {
+          console.log('response:', response)
+
+          this.comment.id = response.data.id;
+          console.log(response.data.id);
+          this.submitted = true;
         })
         .catch(e => {
           console.log(e);
         });
     }
+    },  
+       newComment() {
+      this.submitted = false;
+      this.comment = {};    
+  }
   },
   mounted() {
     this.message = '';
     this.getArticle(this.$route.params.id);
   }
 };
+
 </script>
 
 <style>

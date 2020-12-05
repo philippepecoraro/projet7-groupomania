@@ -104,40 +104,9 @@ export default {
       this.$router.push('/profile');
     }
   },
-  methods: {
-    handleRegister() {
-          this.message = '';
-      this.submitted = true;
-       const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      const myInit = { method: 'POST',
-               headers: myHeaders,
-               body: JSON.stringify(this.user)
-                };
-      fetch('http://localhost:8080/api/auth/signup', myInit)
-        .then((data) =>{
-          if(data.error) {
-            console.log(data.error)
-                this.message =             
-                data.error.toString();
-              this.successful = false;
-          }else {
-                console.log(data)
-                this.message = data.message;
-              this.successful = true;
-          }
-        })
-        .catch((error) => {
-                console.log(error)
-                this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-              this.successful = false;
-        })
-    } 
-
-  /*    this.message = '';
+  methods: {    
+      handleRegister() {
+      this.message = '';
       this.submitted = true;
       this.$validator.validate().then(isValid => {
         if (isValid) {
@@ -155,9 +124,10 @@ export default {
             }
           );
         }
-      });*/
-    }
-  };
+      });
+    }    
+  },
+};
 </script>
 
 <style scoped>
@@ -193,4 +163,5 @@ label {
   -webkit-border-radius: 50%;
   border-radius: 50%;
 }
+
 </style>

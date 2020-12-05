@@ -5,7 +5,6 @@ import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import Article from './views/Article.vue';
 
-
 Vue.use(Router);
 
 export const router = new Router({
@@ -31,26 +30,7 @@ export const router = new Router({
         {
             path: '/profile',
             name: 'profile',
-            // lazy-loaded
             component: () => import('./views/Profile.vue')
-        },
-        {
-            path: '/admin',
-            name: 'admin',
-            // lazy-loaded
-            component: () => import('./views/BoardAdmin.vue')
-        },
-        {
-            path: '/mod',
-            name: 'moderator',
-            // lazy-loaded
-            component: () => import('./views/BoardModerator.vue')
-        },
-        {
-            path: '/user',
-            name: 'user',
-            // lazy-loaded
-            component: () => import('./views/BoardUser.vue')
         },
         {
             path: "/articles",
@@ -65,15 +45,14 @@ export const router = new Router({
             path: "/add",
             name: "add",
             component: () => import("./views/AddArticle.vue")
-        }
-
+        },
     ]
 });
 
 router.beforeEach((to, from, next) => {
-    const publicPages = ['/login', '/register', '/home'];
+    const publicPages = ['/login', '/register'];
     const authRequired = !publicPages.includes(to.path);
-    const loggedIn = localStorage.getItem('user');
+    const loggedIn = sessionStorage.getItem('user');
 
     // trying to access a restricted page + not logged in
     // redirect to login page

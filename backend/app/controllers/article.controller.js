@@ -1,9 +1,6 @@
-//const groupomania = require("../models");
 const db = require("../models");
 const Article = db.article;
-//const Role = db.role;
-//const User = db.user;
-//const Comment = db.comment;
+const User = db.user;
 const Op = db.Sequelize.Op;
 
 // Create and Save a new Article
@@ -21,8 +18,8 @@ exports.create = (req, res) => {
         title: req.body.title,
         description: req.body.description,
         text: req.body.text,
-        UserId: req.body.UserId
-        /* published: req.body.published ? req.body.published : false*/
+        userId: req.body.userId
+
     };
 
     // Save Article in the database
@@ -43,7 +40,7 @@ exports.findAll = (req, res) => {
     const title = req.query.title;
     var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
-    Article.findAll({ where: condition })
+    Article.findAll({ where: condition, include: User })
         .then(data => {
             res.send(data);
         })
@@ -136,19 +133,4 @@ exports.deleteAll = (req, res) => {
                     err.message || "Some error occurred while removing all articles."
             });
         });
-};
-
-// Find all published Articles
-exports.findAllPublished = (req, res) => {
-    Article.findAll({ where: { published: true } })
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving articles."
-            });
-        });
-
 };

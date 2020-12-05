@@ -70,23 +70,13 @@ export default {
   },
   created() {
     if (this.loggedIn) {
-      this.$router.push('/profile');
+     // this.$router.push('/profile');
     }
   },
-  methods: {
-    handleLogin() {
+  methods: {             
+         handleLogin() {
       this.loading = true;
-
-      const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      const myInit = { method: 'POST',
-               headers: myHeaders,
-               body: JSON.stringify(this.user)
-                };
-      fetch('http://localhost:8080/api/auth/signin', myInit);
-            
-
-  /*    this.$validator.validateAll().then(isValid => {
+     this.$validator.validateAll().then(isValid => {
         if (!isValid) {
           this.loading = false;
           return;
@@ -107,7 +97,7 @@ export default {
           );
         }
 
-      });*/
+      });
     }
     
   }

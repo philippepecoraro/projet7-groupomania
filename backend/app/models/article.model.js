@@ -9,6 +9,9 @@ module.exports = (sequelize, Sequelize) => {
         text: {
             type: Sequelize.TEXT
         },
+        signal: {
+            type: Sequelize.BOOLEAN, defaultValue: false
+        }
 
     }, {
         freezeTableName: true
@@ -16,3 +19,5 @@ module.exports = (sequelize, Sequelize) => {
 
     return Article;
 };
+
+

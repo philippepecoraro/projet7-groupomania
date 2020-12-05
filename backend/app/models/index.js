@@ -22,62 +22,35 @@ groupomania.user = require("./user.model.js")(sequelize, Sequelize);
 groupomania.article = require("./article.model.js")(sequelize, Sequelize);
 
 groupomania.comment = require("./comment.model.js")(sequelize, Sequelize);
-//groupomania.role = require("./role.model.js")(sequelize, Sequelize);
-
-/*groupomania.role.belongsToMany(groupomania.user, {
-    through: "user_role",
-    foreignKey: "roleId",
-    otherKey: "userId"
-});
-groupomania.user.belongsToMany(groupomania.role, {
-    through: "user_role",
-    foreignKey: "userId",
-    otherKey: "roleId"
-});*/
 
 groupomania.user.hasOne(groupomania.article, {
-    foreignKey: "userId"
+    foreignKey: "userId",
+    onDelete: "cascade"
 });
 
 groupomania.article.belongsTo(groupomania.user, {
     foreignKey: "userId"
 });
 
-/*groupomania.article.belongsTo(groupomania.user, {
-    foreignKey: {
-        name: "userId"
-        //  allowNull: false
-    }
-});*/
-
 groupomania.user.hasMany(groupomania.comment, {
-    foreignKey: "userId"
+    foreignKey: "userId",
+    onDelete: "cascade"
+
 });
 groupomania.comment.belongsTo(groupomania.user, {
     foreignKey: "userId"
+
 });
 
-/*groupomania.user.hasMany(groupomania.comment, {
-    foreignKey: {
-        name: "userId"
-        // allowNull: false
-    }
-});*/
-
 groupomania.article.hasMany(groupomania.comment, {
-    foreignKey: "articleId"
+    foreignKey: "articleId",
+    onDelete: "cascade"
 });
 groupomania.comment.belongsTo(groupomania.article, {
     foreignKey: "articleId"
+
+
 });
 
-/*groupomania.article.hasMany(groupomania.comment, {
-    foreignKey: {
-        name: "articleId",
-        //  allowNull: false
-    }
-});*/
-
-//groupomania.ROLES = ["user", "admin", "moderator"];
 
 module.exports = groupomania;

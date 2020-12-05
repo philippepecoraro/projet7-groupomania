@@ -4,28 +4,25 @@ module.exports = app => {
 
     var router = require("express").Router();
 
-    // Create a new Tutorial
+    // Create a new Article
     router.post("/", articles.create);
 
-    // Retrieve all Tutorials
+    // Retrieve all Articles
     router.get("/", [authJwt.verifyToken], articles.findAll);
 
 
-    // Retrieve all published Tutorials
-    router.get("/published", articles.findAllPublished);
-
-
-    // Retrieve a single Tutorial with id
+    // Retrieve a single Article with id
     router.get("/:id", [authJwt.verifyToken], articles.findOne);
 
-    // Update a Tutorial with id
+    // Update a Article with id
     router.put("/:id", articles.update);
 
-    // Delete a Tutorial with id
+    // Delete a Article with id
     router.delete("/:id", [authJwt.verifyToken], articles.delete);
 
-    // Delete all Tutorials
+    // Delete all Articles
     router.delete("/", [authJwt.verifyToken], articles.deleteAll);
+
 
     app.use('/api/articles', router);
 };

@@ -1,6 +1,6 @@
 import AuthService from '../services/auth.service';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(sessionStorage.getItem('user'));
 const initialState = user
     ? { status: { loggedIn: true }, user }
     : { status: { loggedIn: false }, user: null };
@@ -36,7 +36,7 @@ export const auth = {
                     return Promise.reject(error);
                 }
             );
-        }
+        },
     },
     mutations: {
         loginSuccess(state, user) {
