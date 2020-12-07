@@ -17,6 +17,7 @@ module.exports = app => {
     //Get comment by id
     router.get("/:id", comment.findOneComment);
 
+    router.put("/:id", comment.updateComment);
 
 
     app.use('/api/comment', router);

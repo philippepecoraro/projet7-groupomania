@@ -2,9 +2,7 @@
   <div class="list row">
     <div class="col-md-12">
       <div class="detail">
-
         <div class="text-left" v-if="currentArticle">
-
           <div class="text-center">
           <a class="btn btn-secondary btn-sm"
             :href= "'/home'" title="go to Articles List"
@@ -13,12 +11,11 @@
           </a> 
           </div>    
           <div v-if="currentArticle.signal" class="text-warning text-center">
-          <h4>Signal Selected Article</h4>
-           </div> 
+          <p class="h4">Signal Selected Article</p>
+          </div> 
 
            <div v-else class="title text-center">
-             <h4>Selected Article</h4>
-            
+             <p class="h4">Selected Article</p>            
            </div>   
 
               <div class="list-row text-center">
@@ -52,12 +49,12 @@
                 </div>    
 
                 <div v-if="currentUser.id !== currentArticle.userId">     
-                  <div v-if="currentArticle.signal">
+                  <div v-if="currentArticle.signal && currentUser.isAdmin">
                   <button class="btn btn-warning"  @click="signalArticle(false)">
-                    Signal Article
+                    Unsignal Article
                   </button>
                   </div>
-                  <div v-else>
+                  <div v-if ="currentArticle.signal === false">
                   <button class="btn btn-warning"  @click="signalArticle(true)">
                     Signal Article
                   </button>
@@ -67,33 +64,47 @@
             <p>_____________________________________________________</p>
 
                 <div class="text-center">   
-              <h5>Comments List</h5> 
-              </div>            
-                <div v-for="(comment, key) in comments"
-                  :key="key">
-                  <div v-if="comment.articleId === currentArticle.id">                             
-                    <p>---------------------------------------------------</p>            
-                    <p><strong>Date: </strong> {{ comment.createdAt}} </p>
+                <h5>Comments List</h5> 
+                </div> 
+
+                <div class="blocComment">          
+                  <ul class="list-group text-left">
+                 
+                  <li class="list-group-item"
+                    v-for="(comment, key) in comments"
+                    :key="key"                   
+                    >
+                    <div v-if="comment.articleId === currentArticle.id">  
+
+                      <div v-if="comment.signal" class="text-warning text-center">
+                      <p class="h5" >Signal Selected Comment</p>
+                      </div> 
+
+                      <p>---------------------------------------------------</p>            
+                      <p><strong>Date: </strong> {{ comment.createdAt}} </p>
                       <p><strong>Comment Author: </strong><br/> {{ comment.User.firstname }}
                       {{ comment.User.lastname }}</p>                       
-                    <p><strong> Text: </strong>{{ comment.text}} </p>             
-                    <p><strong>ArticleId: </strong>{{ comment.articleId}}  </p> 
+                      <p><strong> Text: </strong>{{ comment.text}} </p>             
+                      <p><strong>ArticleId: </strong>{{ comment.articleId}}  </p>                      
 
-                    <div v-if="comment.userId !== currentUser.id">             
-                        <button class="btn btn-warning" @click="deleteOneArticle">
-                          Signal comment
-                        </button>
-                    </div>           
-                  </div>
-                </div>                
+                       <div v-if="comment.userId !== currentUser.id && comment.signal !== true">
+                         <button class="btn btn-warning"  @click="setActiveComment(comment, key)">
+                              Signal Comment
+                         </button>
+                       </div>
+                    </div>
+                  </li>                   
+                </ul>
+              </div>
+
                 <div class="text-center">
-                <a class="btn btn-secondary btn-sm"
-                :href="'/articles/' + currentArticle.id"
-                title="go to edit comment"
-              >
-                Edit comment
-                </a> 
-              </div>    
+                  <a class="btn btn-secondary btn-sm"
+                  :href="'/articles/' + currentArticle.id"
+                  title="go to edit comment"
+                 >
+                  Edit comment
+                  </a> 
+                </div>    
              <p>_____________________________________________________</p>
 
         </div>              
@@ -146,7 +157,9 @@ export default {
       currentIndex: -1,
       title: "",
       comments:[],   
-      message: ""         
+      message: "",   
+      currentComment: null,
+      currentKey: -1     
     };
   },
   computed: {
@@ -175,7 +188,7 @@ export default {
       this.currentArticle = article;
       this.currentIndex = index;
       this.getComment(article.id);      
-    },          
+    },      
     
     removeAllArticles() {
       userService.deleteAll()
@@ -202,7 +215,6 @@ export default {
         userId: this.currentArticle.userId,
         signal: status
       }; 
-
        userService.update(this.currentArticle.id, data)
       .then(response => {
         console.log(response.data);
@@ -219,18 +231,32 @@ export default {
       })
     },
 
+    setActiveComment(comment, key) {
+      this.currentComment = comment;
+      this.currentKey = key;  
+      this.signalComment();
+    },     
 
-   /* searchTitle() {
-      UserService.findByTitle(this.title)
-        .then(response => {
-          this.articles = response.data;
-          console.log("responseFindTitle", response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },  */
-
+        signalComment() {
+          const data = {        
+          //   text: this.currentComment.text,
+              signal: true,
+          //   userId: this.currentComment.userId,
+            //  articleId: this.currentComment.articleId
+          };
+          userService.updateComment(this.currentComment.id, data)
+          .then(response => {
+            console.log(response.data);
+             if (this.currentComment.signal) {
+        alert("Unsignaled");
+        }
+        else {
+          alert("Signaled");
+        }
+            this.refreshList();
+          })
+        },       
+  
     getComment(postId) {
       userService.getAllComment(postId)
       .then(response => {

@@ -43,6 +43,10 @@ class UserService {
     getCommentId(id) {
         return http.get(API_URL_COMMENT + id);
     }
+
+    updateComment(id, data) {
+        return http.put(API_URL_COMMENT + id, data);
+    }
 }
 
 export default new UserService();
