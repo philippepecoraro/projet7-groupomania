@@ -1,34 +1,34 @@
 <template>
   <div class="container">
-    <h3 class="text-center">Profile</h3>
+    <h3 class="text-center">Profil</h3>
     <header class="jumbotron">            
       <form name="form" @submit.prevent="updateUser">
         <div class="row">
           <div class="col">
         <div class="form-group">
           <label for="firstname">
-          <strong>Firstname:</strong></label>
+          <strong>Prénom:</strong></label>
           {{currentUser.firstname}}
           <input type="text" 
           class="form-control"
           id="firstname"
           v-model="user.firstname"
           name="firstname"
-          placeholder="Enter your firstname"
+          placeholder="Entrez votre prénom"
           />
         </div>
         </div>
         <div class="col">
         <div class="form-group">
           <label for="lastname">
-          <strong> Lastname:</strong></label>
+          <strong> Nom:</strong></label>
           {{currentUser.lastname}}
           <input type="text"
           class="form-control" 
           id="lastname"
           v-model="user.lastname"
           name="lastname"
-          placeholder="Enter your lastname"
+          placeholder="Entrez votre nom"
           />
         </div>
         </div>
@@ -42,18 +42,18 @@
       <strong>Email:</strong><br/>
       {{currentUser.email}}
     </p>
-    <strong>Administrator:</strong>
+    <strong>Administrateur:</strong>
     <p>             
     </p>  
     <p  v-if="currentUser.isAdmin">        
-       <strong>You are administrator</strong>
+       <strong>Vous êtes administrateur</strong>
     </p>
     <p v-else>
-        <strong>You are not administrator</strong>
+        <strong>Vous n'êtes pas administrateur</strong>
     </p>
     <div class="text-center"> 
-    <p><strong>Delete your account</strong></p> 
-    <button @click="deleteAccount" class="btn btn-danger" type="button">Account delete</button>
+    <p><strong>Supprimez votre compte</strong></p> 
+    <button @click="deleteAccount" class="btn btn-danger" type="button">Suppression compte</button>
     </div>
   </div>  
 </template>

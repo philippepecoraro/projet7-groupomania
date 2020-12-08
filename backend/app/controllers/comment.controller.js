@@ -76,8 +76,8 @@ exports.deleteComment = (req, res) => {
 }
 
 exports.findAllComments = (req, res) => {
-    const title = req.query.title;
-    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+   // const title = req.query.title;
+    const condition =  { articleId: req.params.articleId} ;
 
     Comment.findAll({ where: condition, include: User })
         .then(data => {

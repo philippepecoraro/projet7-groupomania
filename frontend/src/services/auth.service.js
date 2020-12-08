@@ -20,7 +20,7 @@ class AuthService {
 
     logout() {
         sessionStorage.removeItem('user');
-        alert("You will be disconnected");
+        alert("Vous allez être déconnecté");
     }
 
     register(user) {

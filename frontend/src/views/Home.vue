@@ -1,150 +1,141 @@
 <template>
-  <div class="list row">
-    <div class="col-md-12">
-      <div class="detail">
-        <div class="text-left" v-if="currentArticle">
-          <div class="text-center">
-          <a class="btn btn-secondary btn-sm"
-            :href= "'/home'" title="go to Articles List"
-          >
-            All Articles
-          </a> 
-          </div>    
-          <div v-if="currentArticle.signal" class="text-warning text-center">
-          <p class="h4">Signal Selected Article</p>
-          </div> 
-
-           <div v-else class="title text-center">
-             <p class="h4">Selected Article</p>            
-           </div>   
-
+  <div class="container">
+    <div class="list row">
+      <div class="col-md-12">
+        <div class="detail">
+          <div class="text-left" v-if="currentArticle">
+            <div class="text-center">
+              <a class="btn btn-secondary btn-lg"
+              :href= "'/home'" title="Cliquez pour rejoindre la page d'accueil"
+              >
+              Liste des Articles
+              </a> 
+            </div>    
+            <div v-if="currentArticle.signal" class="text-warning text-center">
+              <p class="h4">Article signalé</p>
+            </div> 
+            <div v-else class="title text-center">
+              <p class="h4">Article</p>            
+            </div>  
               <div class="list-row text-center">
                 <div>
-                 <label><strong>Date:</strong></label><br/> {{ currentArticle.createdAt }}
+                  <label><strong>Date:</strong></label><br/> {{ currentArticle.createdAt }}
                 </div>
                 <div>
-                <label><strong>Article Author:</strong></label><br/> {{ currentArticle.User.firstname }} 
-                  {{ currentArticle.User.lastname }}
+                  <label><strong> Auteur de l'article:</strong></label><br/> {{ currentArticle.User.firstname }} 
+                    {{ currentArticle.User.lastname }}
                 </div>                          
                 <div>
-                <label><strong>Title:</strong></label><br/> {{ currentArticle.title }}
+                  <label><strong>Titre:</strong></label><br/> {{ currentArticle.title }}
                 </div> 
                 <div>
-                <label><strong>Description:</strong></label><br/> {{ currentArticle.description }}
+                  <label><strong>Description:</strong></label><br/> {{ currentArticle.description }}
                 </div> 
-                </div>
-                <div class="text-left">
-                <label><strong>Text:</strong></label> {{ currentArticle.text }}
-                </div>
-                <div class="text-left">
-                <label><strong>CurrentUserId:</strong></label> {{ currentUser.id }}
-                </div>
-                <div class="text-left">
-                <label><strong>ArticleUserId:</strong></label> {{ currentArticle.userId }}
-                </div>
-                <div v-if="currentUser.id === currentArticle.userId">
-                  <button class="btn btn-danger" @click="deleteOneArticle">
-                    Remove 
-                  </button>
-                </div>    
-
-                <div v-if="currentUser.id !== currentArticle.userId">     
-                  <div v-if="currentArticle.signal && currentUser.isAdmin">
-                  <button class="btn btn-warning"  @click="signalArticle(false)">
-                    Unsignal Article
+               </div>
+                  <div class="text-left p-3 mb-2 bg-white">
+                  <label><strong>Texte:</strong></label><br/> {{ currentArticle.text }}
+                  </div>
+                  <div class="text-left">
+                  <label><strong>CurrentUserId:</strong></label> {{ currentUser.id }}
+                  </div>
+                  <div class="text-left">
+                  <label><strong>ArticleUserId:</strong></label> {{ currentArticle.userId }}
+                  </div>
+                  <div v-if="currentUser.isAdmin || currentUser.id === currentArticle.userId">
+                    <button class="btn btn-danger btn-sm" title="Cliquez pour supprimer l'article" @click="deleteOneArticle">
+                      Supprimer Article
+                    </button>
+                  </div>                          
+                  <div v-if="currentUser.isAdmin && currentArticle.signal">
+                    <button class="btn btn-warning btn-sm" title="Cliquez pour désignaler l'article" @click="signalArticle(false)">
+                      Désignaler Article
                   </button>
                   </div>
-                  <div v-if ="currentArticle.signal === false">
-                  <button class="btn btn-warning"  @click="signalArticle(true)">
-                    Signal Article
-                  </button>
-                  </div>
-                
-                </div>
-            <p>_____________________________________________________</p>
-
-                <div class="text-center">   
-                <h5>Comments List</h5> 
-                </div> 
-
-                <div class="blocComment">          
-                  <ul class="list-group text-left">
-                 
-                  <li class="list-group-item"
-                    v-for="(comment, key) in comments"
-                    :key="key"                   
-                    >
-                    <div v-if="comment.articleId === currentArticle.id">  
-
-                      <div v-if="comment.signal" class="text-warning text-center">
-                      <p class="h5" >Signal Selected Comment</p>
-                      </div> 
-
-                      <p>---------------------------------------------------</p>            
-                      <p><strong>Date: </strong> {{ comment.createdAt}} </p>
-                      <p><strong>Comment Author: </strong><br/> {{ comment.User.firstname }}
-                      {{ comment.User.lastname }}</p>                       
-                      <p><strong> Text: </strong>{{ comment.text}} </p>             
-                      <p><strong>ArticleId: </strong>{{ comment.articleId}}  </p>                      
-
-                       <div v-if="comment.userId !== currentUser.id && comment.signal !== true">
-                         <button class="btn btn-warning"  @click="setActiveComment(comment, key)">
-                              Signal Comment
-                         </button>
-                       </div>
+                  <div v-if="currentUser.id !== currentArticle.userId"> 
+                    <div v-if ="currentArticle.signal === false">
+                      <button class="btn btn-warning btn-sm" title="Cliquez pour signaler l'article"  @click="signalArticle(true)">
+                        Signaler Article
+                     </button>
+                    </div>                
+                  </div>     
+                  <div class="text-center">   
+                    <h5>Liste des commentaires</h5> 
+                  </div> 
+                  <div class="blocComment">          
+                    <div class="text-left">                 
+                      <div
+                      v-for="(comment, key) in comments"
+                      :key="key"                                       
+                      >
+                        <div v-if="comment.articleId === currentArticle.id" class="blocCommentBloc"> 
+                          <div v-if="comment.signal" class="text-warning text-center">
+                          <p class="h5" >Commentaire signalé</p>
+                          </div>                                  
+                          <p class="text-center"><strong>Date: </strong><br/> {{ comment.createdAt}} </p>
+                          <p class="text-center" ><strong>Auteur du commentaire: </strong><br/> {{ comment.User.firstname }}
+                          {{ comment.User.lastname }}</p>                       
+                          <p class=" p-3 mb-2 bg-white"><strong> Texte: </strong><br/>{{ comment.text}} </p>             
+                          <p><strong>ArticleId: </strong>{{ comment.articleId}}  </p>                      
+                        </div> 
+                        <div v-if="(comment.userId !== currentUser.id) && comment.signal !== true"> 
+                          <button class="btn btn-warning btn-sm" title="Cliquez pour signaler le commentaire" @click="signalComment(comment.id, true)">
+                            Signaler Commentaire
+                          </button>
+                        </div>
+                        <div v-if="currentUser.isAdmin && comment.signal">
+                          <button class="btn btn-warning btn-sm" title="Cliquez pour désignaler le commentaire" @click="signalComment(comment.id, false)">
+                            Désignaler commentaire
+                          </button>
+                        </div>                 
+                      </div>                   
                     </div>
-                  </li>                   
-                </ul>
-              </div>
-
+                  </div>
                 <div class="text-center">
-                  <a class="btn btn-secondary btn-sm"
+                  <a class="btn btn-secondary btn-lg"
                   :href="'/articles/' + currentArticle.id"
-                  title="go to edit comment"
-                 >
-                  Edit comment
+                  title="Cliquez pour créer un nouveau commentaire"
+                  >
+                  Creer un nouveau commentaire
                   </a> 
-                </div>    
-             <p>_____________________________________________________</p>
-
-        </div>              
-        <div v-else>
-          <br />
-            <p>Please click on a Article...</p>
+                </div>           
+          </div>                 
+          <div v-else>             
             <div class="col-md-12">  
               <div class="bloc">         
-                <h4>Articles List</h4>        
-                    <ul class="list-group text-left">
+                <h3>Liste des Articles</h3> 
+                  <p>Click sur un article...</p>
+                    <ul class="list-group text-left">                     
                       <li class="list-group-item"           
                         v-for="(article, index) in articles"
                         :key="index" 
                         @click="setActiveArticle(article, index)"        
-                      >   
-                        <div class="list-row text-center">  
-                          <p><strong>Creation date:</strong><br/> {{article.createdAt}}</p>
+                        >   
+                          <div class="list-row text-center">  
+                            <p><strong>Date de Creation:</strong><br/> {{article.createdAt}}</p>
 
-                          <p v-if="article.signal" class="text-warning"><strong>Signaled Article:</strong></p>
+                            <p v-if="article.signal" class="text-warning"><strong>Article signalé:</strong></p>
 
-                          <p><strong>Article Author:</strong><br/> {{ article.User.firstname}}
-                          {{ article.User.lastname }}</p>                      
-                          <p><strong>Title:</strong><br/> {{ article.title }}</p> 
-                           <p><strong>Description:</strong></p>
-                           <p class="text-left"> {{ article.description}} </p>
-                        </div>                                                                             
-                      </li>
-                    </ul>      
-                         <button class="m-3 btn btn-sm btn-danger" @click="removeAllArticles">
-                          Remove All
-                        </button>                                    
+                            <p><strong>Auteur de l'article:</strong><br/> {{ article.User.firstname}}
+                            {{ article.User.lastname }}</p>                      
+                            <p><strong>Titre:</strong><br/> {{ article.title }}</p> 
+                            <p><strong>Description:</strong></p>
+                            <p class="text-left"> {{ article.description}} </p>                          
+                          </div>                                                                             
+                      </li>                      
+                    </ul>                         
+                        <button v-if="currentUser.isAdmin" class="m-3 btn btn-sm btn-danger" @click="removeAllArticles">
+                          Supprimmez tous les articles
+                        </button>                                                              
               </div> 
             </div>        
-        </div>      
-      </div>
-    </div>   
-  </div>    
+          </div>      
+        </div>
+      </div>   
+    </div>  
+ </div>
 </template>
 
-<script>     
+<script>  
 
 import userService from '../services/user.service';
 
@@ -159,7 +150,7 @@ export default {
       comments:[],   
       message: "",   
       currentComment: null,
-      currentKey: -1     
+      currentKey: -1
     };
   },
   computed: {
@@ -207,23 +198,18 @@ export default {
             this.refreshList();           
         })
     },
-    signalArticle(status) {
-      const data = {
-        title: this.currentArticle.title,
-        description: this.currentArticle.description,        
-        text: this.currentArticle.text,
-        userId: this.currentArticle.userId,
+    signalArticle(status) {      
+      const data = {       
         signal: status
       }; 
        userService.update(this.currentArticle.id, data)
       .then(response => {
-        console.log(response.data);
-    //    this.signal = this.currentArticle.signal
+        console.log(response.data);   
         if (this.currentArticle.signal) {
-        alert("Unsignaled");
+        alert("Désignalé");
         }
         else {
-          alert("Signaled");
+          alert("Signalé");
         }
         this.refreshList();
         this.message = "The article was updated successfully"
@@ -231,32 +217,28 @@ export default {
       })
     },
 
-    setActiveComment(comment, key) {
-      this.currentComment = comment;
-      this.currentKey = key;  
-      this.signalComment();
-    },     
-
-        signalComment() {
-          const data = {        
-          //   text: this.currentComment.text,
-              signal: true,
-          //   userId: this.currentComment.userId,
-            //  articleId: this.currentComment.articleId
-          };
-          userService.updateComment(this.currentComment.id, data)
-          .then(response => {
-            console.log(response.data);
-             if (this.currentComment.signal) {
-        alert("Unsignaled");
+     signalComment(comment, status) {                   
+          const data = {
+           signal: status,
+         }       
+      
+       userService.updateComment(comment, data)
+      .then(response => {
+        console.log(response.data);
+        console.log(comment);
+        console.log(data);  
+        if (status) {          
+        alert("Signalé");
         }
         else {
-          alert("Signaled");
+          alert("Désignalé");
         }
-            this.refreshList();
-          })
-        },       
-  
+        this.refreshList();
+        this.message = "The article was updated successfully"
+
+      })
+    }, 
+                     
     getComment(postId) {
       userService.getAllComment(postId)
       .then(response => {
@@ -266,12 +248,14 @@ export default {
       .catch(e => {
         console.log(e);
       })
-    },
+    }
   },
+
   mounted() {
     this.retrieveArticles();   
-  }
-};
+   }
+  };
+
 </script>
 
 <style scoped>
@@ -284,7 +268,7 @@ export default {
   text-align: center;
   max-width: 900px;
   margin: auto;
-  border: 2px black solid;
+/*  border: 2px black solid;*/
 }
 .list-group { 
  /* height: 200px;*/
@@ -299,7 +283,7 @@ export default {
   background-color: #EEEEEE;
  /* height: 300px;*/
  /* width: auto;*/
-  border: 2px solid black;
+ /* border: 2px solid black;*/
 }
 li span {
   text-align: left;
@@ -307,7 +291,7 @@ li span {
 .detail {
  /*width: 100%;*/
   text-align: center;
-  border: 1px black solid;
+ /* border: 1px black solid;*/
  /* height: auto;
   width: auto;*/
  /* background-color: cyan;*/
@@ -316,8 +300,7 @@ li span {
   margin-bottom: 50px;
   margin-top: 20px;
 }
-/*
-.signalTitle {
-  background-color: #e0a800;
-}*/
+.blocCommentBloc {
+  border: 1px black solid;
+}
 </style>

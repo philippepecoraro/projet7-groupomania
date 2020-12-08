@@ -1,9 +1,10 @@
 <template>
+<div class="container">
   <div class="submit-form">
-    <h4>Add article</h4>
+    <h4>Ajoutez un article</h4>
        <form name="form" @submit.prevent="handleLogin">         
          <div class="form-group">
-           <label for="title">Title</label>
+           <label for="title">Titre</label>
              <input
               type="text"
               class="form-control"          
@@ -11,12 +12,12 @@
               v-model="article.title"
               v-validate="'required'"
               name="title"
-              placeholder="Enter title"           
+              placeholder="Entrez un titre"           
             />
           <div v-if="submitted && errors.has('title')"
             class="alert alert-danger"
               role="alert"
-            >Title is required!</div>       
+            >Un titre est requis!</div>       
          </div> 
           <div class="form-group">
             <label for="description">Description</label>
@@ -27,31 +28,31 @@
               v-model="article.description"
               v-validate="'required'"
               name="description"
-              placeholder="Enter description"           
+              placeholder="Entrez une description"           
             />
             <div v-if="submitted && errors.has('description')"
             class="alert alert-danger"
             role="alert"
             >
-            Description is required</div>        
+            Une description est requise</div>        
           </div>
           <div class="form-group">
-            <label for="text">Text</label>
+            <label for="text">Texte</label>
             <textarea
               class="form-control"          
               id="text"      
               v-model="article.text"
               v-validate="'required'"
               name="text"
-              placeholder="Enter text"           
+              placeholder="Entrez un  texte"           
             ></textarea>
             <div v-if="submitted && errors.has('text')"
             class="alert alert-danger"
                 role="alert"
-              >Text is required!</div>
+              >Un texte est requis!</div>
           </div>
           <div class="form-group">
-          <button @click="saveArticle" class="btn btn-success">       
+          <button @click="saveArticle" class="btn btn-primary">       
             Submit</button> 
           </div>             
         </form>    
@@ -68,6 +69,7 @@
       {{currentUser.lastname}}
     </p>
   </div>
+</div>
 </template>
 
 <script>

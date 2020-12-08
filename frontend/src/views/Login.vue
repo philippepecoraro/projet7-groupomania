@@ -1,4 +1,5 @@
 <template>
+  <div class="container">
   <div class="col-md-12">
     <div class="card card-container">
       <img
@@ -20,10 +21,10 @@
             v-if="errors.has('email')"
             class="alert alert-danger"
             role="alert"
-          >Email is required!</div>
+          >L'email est requis!</div>
         </div>
         <div class="form-group">
-          <label for="password">Password</label>
+          <label for="password">Mot de passe</label>
           <input
             v-model="user.password"
             v-validate="'required'"
@@ -35,7 +36,7 @@
             v-if="errors.has('password')"
             class="alert alert-danger"
             role="alert"
-          >Password is required!</div>
+          >Le mot de passe est requis!</div>
         </div>
         <div class="form-group">
           <button class="btn btn-primary btn-block" :disabled="loading">
@@ -48,6 +49,7 @@
         </div>
       </form>
     </div>
+  </div>
   </div>
 </template>
 

@@ -1,26 +1,27 @@
 <template>
+<div class="container">
   <div class="submit-form text-center">
-    <h4>Comment</h4>
+    <h4>Commentaire</h4>
       <div v-if="!submitted">        
-        <div class="form-group col-md-12">
-         <label for="text">Text</label>
-         <textarea
+        <div class="form-group">
+         <label for="text"><strong>Texte</strong> (255 characters max) </label>
+         <input
+           type="text"
            class="form-control"
            id="text"          
            v-model="comment.text"
            name="text"
-           placeholder="Enter your text"
-         >
-          </textarea>    
-         <div class="form-group col-md-12 text-left">
-         <button @click="saveComment" class="btn btn-success">       
+           placeholder="Entrez votre texte"         
+          />    
+         <div class="form-group text-left">
+         <button @click="saveComment" class="btn btn-primary">       
           Submit</button> 
          </div>                 
         </div>
       </div>     
       <div v-else>
-        <h4>You submitted successfully!</h4>
-        <button class="btn btn-success" @click="newComment">Add Comment</button>
+        <h4>Envoyé avec succès!</h4>
+        <button class="btn btn-success" @click="newComment">Ajoutez un Commentaire</button>
       </div>       
         <div class="col-md-12 text-center">
           <div v-if="currentArticle" class="edit-form">
@@ -28,7 +29,7 @@
             <h4>Article</h4>
             </div>
             <div>
-              <p><strong>Title:</strong><br/> 
+              <p><strong>Titre:</strong><br/> 
               {{ currentArticle.title }}</p>
             </div>
             <div>
@@ -51,12 +52,13 @@
               <button class="badge badge-danger mr-2"
               @click="deleteArticle"
               >
-              Delete Article
+              Supprimer Article
               </button> 
             </div> 
           </div>
         </div>
   </div> 
+</div>
 </template>
 
 <script>
@@ -127,12 +129,12 @@ export default {
        newComment() {
       this.submitted = false;
       this.comment = {};    
-  }
+    }
   },
   mounted() {
     this.message = '';
     this.getArticle(this.$route.params.id);
-  }
+  }  
 };
 
 </script>

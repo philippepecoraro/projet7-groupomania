@@ -4,12 +4,12 @@
       <div class="navbar-nav mr-auto">
         <li class="nav-item">
           <router-link to="/home" class="nav-link">
-            <font-awesome-icon icon="home" />Home
+            <font-awesome-icon icon="home" />Accueil
           </router-link>
         </li>       
         <li class="nav-item">
            <router-link to="/add" class="nav-link">
-            Add Article
+            Ajout Article
           </router-link>
         </li>
       </div>
@@ -28,7 +28,12 @@
       <div v-if="currentUser" class="navbar-nav ml-auto">
         <li class="nav-item">
           <router-link to="/profile" class="nav-link">             
-            {{ currentUser.firstname }} {{ currentUser.lastname}}            
+            {{ currentUser.firstname }} {{ currentUser.lastname}} 
+            <div v-if="currentUser.isAdmin">
+              Administrateur 
+            </div>
+            <div v-else>
+              Utilisateur </div>          
           </router-link>
         </li>
         <li class="nav-item">
@@ -36,13 +41,7 @@
             <font-awesome-icon icon="sign-out-alt" />LogOut
           </a>
         </li>
-      </div>
-       <div class="connectedTitle" v-if="currentUser !== null" >
-        <p>Connected</p>
-      </div>
-      <div class="connectedTitle" v-else>
-        <p>Not connected</p>
-      </div>
+      </div>     
     </nav>     
       <div class="text-center">
         <a href ="#" >
