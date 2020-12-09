@@ -1,75 +1,68 @@
 <template>
-<div class="container">
-  <div class="submit-form">
-    <h4>Ajoutez un article</h4>
-       <form name="form" @submit.prevent="handleLogin">         
-         <div class="form-group">
-           <label for="title">Titre</label>
-             <input
-              type="text"
-              class="form-control"          
-              id="title"    
-              v-model="article.title"
-              v-validate="'required'"
-              name="title"
-              placeholder="Entrez un titre"           
-            />
-          <div v-if="submitted && errors.has('title')"
-            class="alert alert-danger"
-              role="alert"
-            >Un titre est requis!</div>       
-         </div> 
-          <div class="form-group">
-            <label for="description">Description</label>
-            <input
-              type="text"
-              class="form-control"                     
-              id="description"       
-              v-model="article.description"
-              v-validate="'required'"
-              name="description"
-              placeholder="Entrez une description"           
-            />
-            <div v-if="submitted && errors.has('description')"
-            class="alert alert-danger"
-            role="alert"
-            >
-            Une description est requise</div>        
-          </div>
-          <div class="form-group">
-            <label for="text">Texte</label>
-            <textarea
-              class="form-control"          
-              id="text"      
-              v-model="article.text"
-              v-validate="'required'"
-              name="text"
-              placeholder="Entrez un  texte"           
-            ></textarea>
-            <div v-if="submitted && errors.has('text')"
-            class="alert alert-danger"
-                role="alert"
-              >Un texte est requis!</div>
-          </div>
-          <div class="form-group">
-          <button @click="saveArticle" class="btn btn-primary">       
-            Submit</button> 
-          </div>             
-        </form>    
-    <p>
-      <strong>CurrentId:</strong>
-      {{currentUser.id}}
-    </p>
-    <p>
-      <strong>CurrentFirstname:</strong>
-      {{currentUser.firstname}}
-    </p>
-    <p>
-      <strong>CurrentLastname:</strong>
-      {{currentUser.lastname}}
-    </p>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="text-center">Ajoutez un article</h1>
+          <form name="form" @submit.prevent="handleLogin">         
+            <div class="form-group">
+              <label for="title"><strong>Titre</strong></label>
+                <input
+                 type="text"
+                 class="form-control"          
+                 id="title"    
+                 v-model="article.title"
+                 v-validate="'required'"
+                 name="title"
+                 placeholder="Entrez un titre"           
+                />
+                <div v-if="submitted && errors.has('title')"
+                  class="alert alert-danger"
+                  role="alert"
+                  >Un titre est requis!
+                </div>       
+            </div> 
+            <div class="form-group">
+              <label for="description"><strong>Description</strong></label>
+                <input
+                  type="text"
+                  class="form-control"                     
+                  id="description"       
+                  v-model="article.description"
+                  v-validate="'required'"
+                  name="description"
+                  placeholder="Entrez une description"           
+                />
+                <div v-if="submitted && errors.has('description')"
+                  class="alert alert-danger"
+                  role="alert"
+                >
+                Une description est requise
+                </div>        
+            </div>
+            <div class="form-group">
+              <label for="text"><strong>Texte</strong></label>
+                <textarea
+                  class="form-control"          
+                  id="text"      
+                  v-model="article.text"
+                  v-validate="'required'"
+                  name="text"
+                  placeholder="Entrez un  texte"           
+                ></textarea>
+                <div v-if="submitted && errors.has('text')"
+                  class="alert alert-danger"
+                  role="alert"
+                  >Un texte est requis!
+                </div>
+            </div>
+            <div class="form-group">
+              <button @click="saveArticle" class="btn btn-primary">       
+              Submit</button> 
+            </div>             
+          </form>     
+      </div>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -105,7 +98,7 @@ export default {
       };
 
     if (this.article.title && this.article.description && this.article.text) {
-      ArticleDataService.create(data)
+       ArticleDataService.create(data)
         .then(response => {
           this.article.id = response.data.id;
           console.log(response.data);
@@ -124,10 +117,10 @@ export default {
       this.submitted = true;
       this.$validator.validate().then(isValid => {
         if (!isValid) {      
-          window.alert('You submitted unsuccessfully!');
+          window.alert("L'article n'a pas été ajouté!");
           return;
         }  else {             
-              window.alert('You submitted successfully!');
+              window.alert('Article ajouté avec succès!');
               this.$router.push('/home');
             }                           
         }        
@@ -142,4 +135,5 @@ export default {
   max-width: 300px;
   margin: auto;
 }
+
 </style>

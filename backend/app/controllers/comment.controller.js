@@ -18,7 +18,7 @@ exports.createComment = (req, res) => {
                 res.status(500).send({ message: err.message });
             })
     }
-}
+};
 exports.deleteComment = (req, res) => {
     let commentId = req.params.id
     let userIdForDelete = req.userId
@@ -44,40 +44,40 @@ exports.deleteComment = (req, res) => {
                             .then(num => {
                                 if (num == 1) {
                                     res.send({
-                                        message: "Article was deleted successfully !"
+                                        message: "L'article a été supprimé avecsuccès!"
                                     });
 
                                 } else {
                                     res.send({
-                                        message: `Cannot delete Article with id=${id}.Maybe article was not found`
+                                        message: `Impossible de supprimer le commentaire avec l'identifiant=${id}.Peut-être que le commentaire n'a pas été trouvé`
                                     });
                                 }
 
                             })
                             .catch(err => {
                                 res.status(500).send({
-                                    message: "Could not delete Article with id=" + id
+                                    message: "Impossible de supprimer le commentaire avec l'identifiant=" + id
                                 });
                             });
                     }
                 })
                 .catch(err => {
                     res.status(500).send({
-                        message: "Error to find article"
+                        message: "Erreur de recherche de commentaire"
                     })
                 })
         })
 
         .catch(err => {
             res.status(400).send({
-                message: "Error to find user"
+                message: "Erreur sur la recherche de l'utilisateur"
             })
         })
-}
+};
 
 exports.findAllComments = (req, res) => {
-   // const title = req.query.title;
-    const condition =  { articleId: req.params.articleId} ;
+    // const title = req.query.title;
+    const condition = { articleId: req.params.articleId };
 
     Comment.findAll({ where: condition, include: User })
         .then(data => {
@@ -86,7 +86,7 @@ exports.findAllComments = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving comments."
+                    err.message || "Une erreur s'est produite lors de la récupération des commentaires"
             });
         });
 };
@@ -99,7 +99,7 @@ exports.findOneComment = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving Comments with id=" + id
+                message: "Erreur sur la récupération des commentaires avec id=" + id
             });
         });
 };
@@ -113,18 +113,35 @@ exports.updateComment = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Comment was updated successfully."
+                    message: "Commentaire mis a jour avec succès."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Comment with id=${id}. Maybe Comment was not found or req.body is empty!`
+                    message: `Impossible de mettre à jour le commentaire avec l'ID=${id}. Peut-être que le commentaire n'a pas été trouvé ou que req.body est vide!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Comment with id=" + id
+                message: "Erreur sur la mise à jour des commentaires avec id=" + id
             });
         });
-
 };
+
+exports.getSignalComment = (req, res) => {
+    const condition = { signal: req.params.signal };
+    console.log('signal:', req.params.signal)
+
+    Comment.findAll({ where: condition, include: User })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Erreur sur la récupération des commentaires"
+            });
+        });
+};
+
+

@@ -47,6 +47,15 @@ class UserService {
     updateComment(id, data) {
         return http.put(API_URL_COMMENT + id, data);
     }
+
+    getAllCommentSignal(signal) {
+        return http.get(API_URL_COMMENT + "signal/" + signal);
+    }
+
+    getAllArticleSignal(signal) {
+        return http.get(API_URL + "signal/" + signal);
+    }
+
 }
 
 export default new UserService();

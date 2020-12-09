@@ -38,7 +38,7 @@ exports.create = (req, res) => {
 // Retrieve all Articles from the database.
 exports.findAll = (req, res) => {
     const title = req.query.title;
-    var condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
+    const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
 
     Article.findAll({ where: condition, include: User })
         .then(data => {
@@ -134,3 +134,18 @@ exports.deleteAll = (req, res) => {
             });
         });
 };
+
+exports.getSignalArticle = (req, res) => {
+    const condition = { signal: req.params.signal };
+
+    Article.findAll({ where: condition, include: User })
+        .then(data => {
+            res.send(data);
+        })
+        .catch(err => {
+            res.status(500).send({
+                message:
+                    err.message || "Erreur sur la récupération des commentaires"
+            });
+        });
+}

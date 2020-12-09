@@ -1,56 +1,55 @@
 <template>
   <div class="container">
-    <h3 class="text-center">Profil</h3>
-    <header class="jumbotron">            
-      <form name="form" @submit.prevent="updateUser">
-        <div class="row">
-          <div class="col">
-        <div class="form-group">
-          <label for="firstname">
-          <strong>Prénom:</strong></label>
-          {{currentUser.firstname}}
-          <input type="text" 
-          class="form-control"
-          id="firstname"
-          v-model="user.firstname"
-          name="firstname"
-          placeholder="Entrez votre prénom"
-          />
-        </div>
-        </div>
-        <div class="col">
-        <div class="form-group">
-          <label for="lastname">
-          <strong> Nom:</strong></label>
-          {{currentUser.lastname}}
-          <input type="text"
-          class="form-control" 
-          id="lastname"
-          v-model="user.lastname"
-          name="lastname"
-          placeholder="Entrez votre nom"
-          />
-        </div>
-        </div>
-        </div> 
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </div>            
-      </form>
-    </header>    
-    <p>
-      <strong>Email:</strong><br/>
-      {{currentUser.email}}
-    </p>
+    <h1 class="text-center">Profil</h1>
+      <header class="jumbotron">            
+         <form name="form" @submit.prevent="updateUser">
+            <div class="row">
+              <div class="col">
+                <div class="form-group">
+                 <label for="firstname">
+                 <strong>Prénom:</strong></label>
+                 {{currentUser.firstname}}
+                 <input type="text" 
+                 class="form-control"
+                 id="firstname"
+                 v-model="user.firstname"
+                 name="firstname"
+                 placeholder="Entrez votre prénom"
+                 />
+                </div>
+              </div>
+              <div class="col">
+                <div class="form-group">
+                  <label for="lastname">
+                  <strong> Nom:</strong></label>
+                 {{currentUser.lastname}}
+                 <input type="text"
+                 class="form-control" 
+                 id="lastname"
+                 v-model="user.lastname"
+                 name="lastname"
+                 placeholder="Entrez votre nom"
+                 />
+                </div>
+              </div>
+            </div> 
+            <div class="form-group">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>            
+         </form>
+      </header>  
+
+    <p><strong>Email:</strong><br/>
+      {{currentUser.email}}</p>
     <strong>Administrateur:</strong>
-    <p>             
-    </p>  
-    <p  v-if="currentUser.isAdmin">        
-       <strong>Vous êtes administrateur</strong>
-    </p>
-    <p v-else>
+   
+    <div v-if="currentUser.isAdmin">        
+      <p><strong>Vous êtes administrateur</strong></p>
+      <p class="h5">Gestion des signalements</p>
+    <a class="btn btn-secondary" href="/admin" role="button">Gestion</a></div>
+    <div v-else>
         <strong>Vous n'êtes pas administrateur</strong>
-    </p>
+    </div>
     <div class="text-center"> 
     <p><strong>Supprimez votre compte</strong></p> 
     <button @click="deleteAccount" class="btn btn-danger" type="button">Suppression compte</button>
@@ -101,23 +100,17 @@ export default {
       };
       User.updateName(this.currentUser.id, data)   
       .then(data => {
-        console.log(data);
-        console.log('currentuserfirstname:', this.currentUser.firstname);
-        console.log('currentuserlastname:', this.currentUser.lastname);     
-        console.log('userFirstname:', this.user.firstname)     
-        console.log('userlasttname:', this.user.lastname)
-         sessionStorage.setItem('user', JSON.stringify(this.user));
-         console.log('user:', this.user);
-         console.log('currentUser:', this.currentUser);
-        alert('The User was updated successfully!')
+        console.log(data);       
+        sessionStorage.setItem('user', JSON.stringify(this.user));       
+        alert('Le compte utilisateur a été supprimé avec succès !')
         this.logOut();     
       })
-       .catch(e => {
-          console.log(e);
-        });
+      .catch(e => {
+        console.log(e);
+      });
     }, 
     deleteAccount() {
-       if ( confirm("Are you sure to delete your account")) {
+       if ( confirm("Etes vous sure de vouloir supprimer ce compte ?")) {
         
       User.deleteUser(this.currentUser.id)
       .then(response => {

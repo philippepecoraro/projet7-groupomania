@@ -1,4 +1,5 @@
 const { authJwt } = require("../middleware");
+const { article } = require("../models");
 module.exports = app => {
     const articles = require("../controllers/article.controller.js");
 
@@ -22,6 +23,8 @@ module.exports = app => {
 
     // Delete all Articles
     router.delete("/", [authJwt.verifyToken], articles.deleteAll);
+
+    router.get("/signal/:signal", articles.getSignalArticle);
 
 
     app.use('/api/articles', router);

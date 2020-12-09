@@ -19,6 +19,8 @@ module.exports = app => {
 
     router.put("/:id", comment.updateComment);
 
+    router.get("/signal/:signal", comment.getSignalComment);
+
 
     app.use('/api/comment', router);
 

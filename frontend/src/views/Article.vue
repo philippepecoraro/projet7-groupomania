@@ -1,33 +1,38 @@
 <template>
 <div class="container">
-  <div class="submit-form text-center">
-    <h4>Commentaire</h4>
-      <div v-if="!submitted">        
-        <div class="form-group">
-         <label for="text"><strong>Texte</strong> (255 characters max) </label>
-         <input
-           type="text"
-           class="form-control"
-           id="text"          
-           v-model="comment.text"
-           name="text"
-           placeholder="Entrez votre texte"         
-          />    
-         <div class="form-group text-left">
-         <button @click="saveComment" class="btn btn-primary">       
-          Submit</button> 
-         </div>                 
+   <div class="row">
+      <div class="col-md-8 text-center">
+        <div class="submit-form text-center">
+          <h1>Commentaire</h1>
+            <div v-if="!submitted">        
+              <div class="form-group">
+              <label for="text"><strong>Texte</strong> (255 caractères max) </label>
+              <input
+                type="text"
+                class="form-control"
+                id="text"          
+                v-model="comment.text"
+                name="text"
+                placeholder="Entrez votre texte"         
+                />    
+                <div class="form-group text-left">
+                <button @click="saveComment" class="btn btn-primary">       
+                  Submit</button> 
+                </div>                 
+              </div>
+            </div>              
+            <div v-else>
+              <p class="h4">Envoyé avec succès!</p>
+              <button class="btn btn-success" @click="newComment">Ajoutez un Commentaire</button>
+            </div> 
         </div>
-      </div>     
-      <div v-else>
-        <h4>Envoyé avec succès!</h4>
-        <button class="btn btn-success" @click="newComment">Ajoutez un Commentaire</button>
-      </div>       
-        <div class="col-md-12 text-center">
-          <div v-if="currentArticle" class="edit-form">
+      </div> 
+   </div>
+        <div class="row">
+        <div class="col-md-10">
+          <div v-if="currentArticle">
             <div class="text-center">
-            <h4>Article</h4>
-            </div>
+            <h3>Article</h3>       
             <div>
               <p><strong>Titre:</strong><br/> 
               {{ currentArticle.title }}</p>
@@ -36,28 +41,15 @@
               <p><strong>Description:</strong><br/>
                {{ currentArticle.description }}</p>
             </div>
+            </div>
             <div>
               <p><strong>Texte</strong><br/>
               {{ currentArticle.text}}</p>
-            </div>
-            <div>
-              <p><strong>Article Id</strong><br/>
-              {{ currentArticle.id}}</p>
-            </div>
-            <div>
-              <p><strong>Article userId</strong><br/>
-              {{ currentArticle.userId}}</p>
-            </div>           
-            <div class="text-center">
-              <button class="badge badge-danger mr-2"
-              @click="deleteArticle"
-              >
-              Supprimer Article
-              </button> 
             </div> 
+            
           </div>
         </div>
-  </div> 
+      </div>
 </div>
 </template>
 
@@ -134,6 +126,7 @@ export default {
   mounted() {
     this.message = '';
     this.getArticle(this.$route.params.id);
+    console.log(this.$route.params.id)
   }  
 };
 

@@ -5,7 +5,7 @@
         <div class="detail">
           <div class="text-left" v-if="currentArticle">
             <div class="text-center">
-              <a class="btn btn-secondary btn-lg"
+              <a class="btn btn-secondary btn-lg" role="button"
               :href= "'/home'" title="Cliquez pour rejoindre la page d'accueil"
               >
               Liste des Articles
@@ -15,51 +15,56 @@
               <p class="h4">Article signalé</p>
             </div> 
             <div v-else class="title text-center">
-              <p class="h4">Article</p>            
+              <h2>Article</h2>            
             </div>  
               <div class="list-row text-center">
                 <div>
-                  <label><strong>Date:</strong></label><br/> {{ currentArticle.createdAt }}
+                  <label><strong>Date:</strong></label><br/> 
+                  {{ currentArticle.createdAt }}
                 </div>
                 <div>
-                  <label><strong> Auteur de l'article:</strong></label><br/> {{ currentArticle.User.firstname }} 
+                  <label><strong> Auteur de l'article:</strong></label><br/> 
+                  {{ currentArticle.User.firstname }} 
                     {{ currentArticle.User.lastname }}
                 </div>                          
                 <div>
-                  <label><strong>Titre:</strong></label><br/> {{ currentArticle.title }}
+                  <label><strong>Titre:</strong></label><br/> 
+                  {{ currentArticle.title }}
                 </div> 
                 <div>
-                  <label><strong>Description:</strong></label><br/> {{ currentArticle.description }}
+                  <label><strong>Description:</strong></label><br/> 
+                  {{ currentArticle.description }}
                 </div> 
                </div>
                   <div class="text-left p-3 mb-2 bg-white">
-                  <label><strong>Texte:</strong></label><br/> {{ currentArticle.text }}
-                  </div>
-                  <div class="text-left">
-                  <label><strong>CurrentUserId:</strong></label> {{ currentUser.id }}
-                  </div>
-                  <div class="text-left">
-                  <label><strong>ArticleUserId:</strong></label> {{ currentArticle.userId }}
-                  </div>
-                  <div v-if="currentUser.isAdmin || currentUser.id === currentArticle.userId">
-                    <button class="btn btn-danger btn-sm" title="Cliquez pour supprimer l'article" @click="deleteOneArticle">
+                  <label><strong>Texte:</strong></label><br/> 
+                  {{ currentArticle.text }}
+                  </div> 
+                    <div v-if="currentUser.isAdmin || currentUser.id === currentArticle.userId">
+                    <button class="btn btn-danger btn-sm" 
+                    title="Cliquez pour supprimer l'article"
+                     @click="deleteOneArticle">
                       Supprimer Article
                     </button>
                   </div>                          
                   <div v-if="currentUser.isAdmin && currentArticle.signal">
-                    <button class="btn btn-warning btn-sm" title="Cliquez pour désignaler l'article" @click="signalArticle(false)">
+                    <button class="btn btn-warning btn-sm" 
+                    title="Cliquez pour désignaler l'article"
+                    @click="signalArticle(false)">
                       Désignaler Article
                   </button>
                   </div>
                   <div v-if="currentUser.id !== currentArticle.userId"> 
                     <div v-if ="currentArticle.signal === false">
-                      <button class="btn btn-warning btn-sm" title="Cliquez pour signaler l'article"  @click="signalArticle(true)">
+                      <button class="btn btn-warning btn-sm"
+                       title="Cliquez pour signaler l'article" 
+                        @click="signalArticle(true)">
                         Signaler Article
                      </button>
                     </div>                
                   </div>     
                   <div class="text-center">   
-                    <h5>Liste des commentaires</h5> 
+                    <h3>Liste des commentaires</h3> 
                   </div> 
                   <div class="blocComment">          
                     <div class="text-left">                 
@@ -68,22 +73,29 @@
                       :key="key"                                       
                       >
                         <div v-if="comment.articleId === currentArticle.id" class="blocCommentBloc"> 
-                          <div v-if="comment.signal" class="text-warning text-center">
+                          <div v-if="comment.signal" 
+                          class="text-warning text-center">
                           <p class="h5" >Commentaire signalé</p>
                           </div>                                  
-                          <p class="text-center"><strong>Date: </strong><br/> {{ comment.createdAt}} </p>
-                          <p class="text-center" ><strong>Auteur du commentaire: </strong><br/> {{ comment.User.firstname }}
+                          <p class="text-center"><strong>Date: </strong><br/> 
+                          {{ comment.createdAt}} </p>
+                          <p class="text-center" ><strong>Auteur du commentaire: </strong><br/>
+                           {{ comment.User.firstname }}
                           {{ comment.User.lastname }}</p>                       
-                          <p class=" p-3 mb-2 bg-white"><strong> Texte: </strong><br/>{{ comment.text}} </p>             
-                          <p><strong>ArticleId: </strong>{{ comment.articleId}}  </p>                      
+                          <p class=" p-3 mb-2 bg-white"><strong> Texte: </strong><br/>
+                          {{ comment.text}} </p>                                               
                         </div> 
                         <div v-if="(comment.userId !== currentUser.id) && comment.signal !== true"> 
-                          <button class="btn btn-warning btn-sm" title="Cliquez pour signaler le commentaire" @click="signalComment(comment.id, true)">
+                          <button class="btn btn-warning btn-sm" 
+                          title="Cliquez pour signaler le commentaire" 
+                          @click="signalComment(comment.id, true)">
                             Signaler Commentaire
                           </button>
                         </div>
                         <div v-if="currentUser.isAdmin && comment.signal">
-                          <button class="btn btn-warning btn-sm" title="Cliquez pour désignaler le commentaire" @click="signalComment(comment.id, false)">
+                          <button class="btn btn-warning btn-sm" 
+                          title="Cliquez pour désignaler le commentaire" 
+                          @click="signalComment(comment.id, false)">
                             Désignaler commentaire
                           </button>
                         </div>                 
@@ -102,7 +114,7 @@
           <div v-else>             
             <div class="col-md-12">  
               <div class="bloc">         
-                <h3>Liste des Articles</h3> 
+                <h1>Liste des Articles</h1> 
                   <p>Click sur un article...</p>
                     <ul class="list-group text-left">                     
                       <li class="list-group-item"           
@@ -111,19 +123,25 @@
                         @click="setActiveArticle(article, index)"        
                         >   
                           <div class="list-row text-center">  
-                            <p><strong>Date de Creation:</strong><br/> {{article.createdAt}}</p>
+                            <p><strong>Date de Creation:</strong><br/> 
+                            {{article.createdAt}}</p>
 
-                            <p v-if="article.signal" class="text-warning"><strong>Article signalé:</strong></p>
+                            <p v-if="article.signal" 
+                            class="text-warning"><strong>Article signalé:</strong></p>
 
-                            <p><strong>Auteur de l'article:</strong><br/> {{ article.User.firstname}}
+                            <p><strong>Auteur de l'article:</strong><br/> 
+                            {{ article.User.firstname}}
                             {{ article.User.lastname }}</p>                      
-                            <p><strong>Titre:</strong><br/> {{ article.title }}</p> 
+                            <p><strong>Titre:</strong><br/> 
+                            {{ article.title }}</p> 
                             <p><strong>Description:</strong></p>
-                            <p class="text-left"> {{ article.description}} </p>                          
+                            <p> {{ article.description}} </p>                          
                           </div>                                                                             
                       </li>                      
                     </ul>                         
-                        <button v-if="currentUser.isAdmin" class="m-3 btn btn-sm btn-danger" @click="removeAllArticles">
+                        <button v-if="currentUser.isAdmin" 
+                        class="m-3 btn btn-sm btn-danger"
+                         @click="removeAllArticles">
                           Supprimmez tous les articles
                         </button>                                                              
               </div> 
@@ -260,41 +278,26 @@ export default {
 
 <style scoped>
 
-.bloc {
-  border: 2px green solid;
-}
 .list {
   background-color: #f7f7f7;
   text-align: center;
   max-width: 900px;
   margin: auto;
-/*  border: 2px black solid;*/
 }
 .list-group { 
- /* height: 200px;*/
  width: auto;
-  margin: auto;
- /* border: 2px solid blue;*/
+  margin: auto; 
 }
 .list-group-item {
   display: flex;
-  flex-direction: column;
- /*background-color: #E1F5FE;*/
-  background-color: #EEEEEE;
- /* height: 300px;*/
- /* width: auto;*/
- /* border: 2px solid black;*/
+  flex-direction: column; 
+  background-color: #EEEEEE; 
 }
 li span {
   text-align: left;
 }
 .detail {
- /*width: 100%;*/
-  text-align: center;
- /* border: 1px black solid;*/
- /* height: auto;
-  width: auto;*/
- /* background-color: cyan;*/
+  text-align: center; 
 }
 .btn {
   margin-bottom: 50px;

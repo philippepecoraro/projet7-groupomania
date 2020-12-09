@@ -4,6 +4,7 @@ import Home from './views/Home.vue';
 import Login from './views/Login.vue';
 import Register from './views/Register.vue';
 import Article from './views/Article.vue';
+import Admin from './views/Admin.vue';
 
 Vue.use(Router);
 
@@ -45,6 +46,10 @@ export const router = new Router({
             path: "/add",
             name: "add",
             component: () => import("./views/AddArticle.vue")
+        },
+        {
+            path: '/admin',
+            component: Admin
         },
     ]
 });
