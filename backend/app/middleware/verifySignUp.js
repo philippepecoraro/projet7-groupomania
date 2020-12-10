@@ -13,7 +13,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
         }).then(user => {
             if (user) {
                 return res.status(400).json({
-                    error: "Failed! lastname is already in use!"
+                    error: "Echoué! le nom est déjà utilisé"
                 });
             }
 
@@ -25,7 +25,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
             }).then(user => {
                 if (user) {
                     res.status(400).json({
-                        error: "Failed! Email is already in use!"
+                        error: "Echoué! le nom est déjà utilisé"
                     });
                     return;
                 }
@@ -33,7 +33,7 @@ checkDuplicateUsernameOrEmail = (req, res, next) => {
             });
         }).catch(error => {
             res.status(400).send({
-                error: "Failed! Email is already in use!"
+                error: "Echoué! le nom est déjà utilisé"
             });
         })
 };

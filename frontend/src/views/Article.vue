@@ -2,14 +2,14 @@
 <div class="container">
    <div class="row">
       <div class="col-md-8 text-center">
-        <div class="submit-form text-center">
+        <div class="text-center">
           <h1>Commentaire</h1>
             <div v-if="!submitted">        
               <div class="form-group">
               <label for="text"><strong>Texte</strong> (255 caractères max) </label>
               <input
                 type="text"
-                class="form-control"
+                class="form-control shadow-lg"
                 id="text"          
                 v-model="comment.text"
                 name="text"
@@ -29,7 +29,7 @@
       </div> 
    </div>
         <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-10 articleBord shadow">
           <div v-if="currentArticle">
             <div class="text-center">
             <h3>Article</h3>       
@@ -137,4 +137,8 @@ export default {
   max-width: 300px;
   margin: auto;
 }
+.articleBord {
+  border-radius: 25px;
+}
+
 </style>

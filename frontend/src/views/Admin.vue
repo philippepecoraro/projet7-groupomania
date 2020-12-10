@@ -13,30 +13,26 @@
                         </button>                
                       </p>                   
                       <ul class="list-group text-left">
-                        <li class="list-group-item"
+                        <li class="list-group-item shadow-lg"
                           v-for="(comment, key) in comments"
                       :key="key" 
-                      @click="setActiveComment(comment, key)" > 
+                      > 
                       <div class="list-row text-center">
-                        <p><strong>Date</strong><br/> 
-                        {{ comment.createdAt}}                        
-                        <p>Comment Signal: {{ comment.signal}} </p>           
-                        <p><strong>Comment user firstname:</strong> 
-                        {{ comment.User.firstname }}</p>
-                         <p><strong>Comment user lastname:</strong> 
+                        <p><strong>Date:</strong><br/> 
+                        {{ comment.createdAt}}                                      
+                        <p><strong>Auteur:</strong><br/> 
+                        {{ comment.User.firstname }}                          
                          {{ comment.User.lastname }}</p>
                         </div>
-                        <div class="list-row text-left">
+                        <div class="list-row text-left shadow">
                          <p><strong>Texte:</strong><br/> 
-                         {{ comment.text}} </p>
-                        <p> </p>                     
+                         {{ comment.text}} </p>                                             
                       </div>
                         </li>        
                      </ul>
                     </div> 
                 </div>
-            </div>
-        
+            </div>        
               <div class="col-md">
                  <div class="bloc">
                    <div class="text-center">
@@ -49,34 +45,34 @@
                   </button>
                     </p>
                       <ul class="list-group text-left">
-                        <li class="list-group-item"
+                        <li class="list-group-item shadow-lg"
                           v-for="(article, key) in articles"
                       :key="key" >
-
                       <div class="list-row text-center">
                         <p><strong>Date</strong><br/> 
                         {{ article.createdAt}}                        
-                        <p>Article Signal: {{ article.signal}} </p>           
-                        <p><strong>Article user firstname:</strong> 
-                        {{ article.User.firstname }}</p>
-                         <p><strong>Article user lastname:</strong> 
+                                  
+                        <p><strong>Auteur:</strong><br/> 
+                        {{ article.User.firstname }}                         
                          {{ article.User.lastname }}</p>
-                         <p><strong>Titre:</strong>
+                         <p><strong>Titre:</strong><br/>
                          {{ article.title }}</p>
-                         <p><strong>Description</strong>
+                          <div class="list-row text-left shadow"> 
+                         <p><strong>Description:</strong><br/>
                          {{ article.description }}</p>
+                          </div>
+                          <div class="list-row text-left shadow">
                          <p><strong>Texte:</strong><br/>
                          {{ article.text }}</p>
+                          </div>
                         </div>
-
                       </li>
                     </ul>
                   </div>
                </div>
            </div>
        </div> 
-    </div>       
-        
+    </div>              
 </template>
 
 <script>
@@ -140,3 +136,16 @@ export default {
    };
 
 </script>
+
+<style scoped>
+
+  .list-group,.list-group-item   {
+    border-radius: 20px;
+    
+  }  
+  .list-row {
+    border-radius: 10px;  
+  }
+ 
+
+</style>

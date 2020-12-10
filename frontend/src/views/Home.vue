@@ -2,10 +2,10 @@
   <div class="container">
     <div class="list row">
       <div class="col-md-12">
-        <div class="detail">
-          <div class="text-left" v-if="currentArticle">
+        <div class="detail shadow">
+          <div class="text-left shadow-lg" v-if="currentArticle">
             <div class="text-center">
-              <a class="btn btn-secondary btn-lg" role="button"
+              <a class="btn btn-secondary btn-lg shadow-lg" role="button"
               :href= "'/home'" title="Cliquez pour rejoindre la page d'accueil"
               >
               Liste des Articles
@@ -36,19 +36,19 @@
                   {{ currentArticle.description }}
                 </div> 
                </div>
-                  <div class="text-left p-3 mb-2 bg-white">
+                  <div class="blocText text-left p-3 mb-2 bg-white shadow-lg">
                   <label><strong>Texte:</strong></label><br/> 
                   {{ currentArticle.text }}
                   </div> 
                     <div v-if="currentUser.isAdmin || currentUser.id === currentArticle.userId">
-                    <button class="btn btn-danger btn-sm" 
+                    <button class="btn btn-danger btn-sm shadow" 
                     title="Cliquez pour supprimer l'article"
                      @click="deleteOneArticle">
                       Supprimer Article
                     </button>
                   </div>                          
                   <div v-if="currentUser.isAdmin && currentArticle.signal">
-                    <button class="btn btn-warning btn-sm" 
+                    <button class="btn btn-warning btn-sm shadow" 
                     title="Cliquez pour désignaler l'article"
                     @click="signalArticle(false)">
                       Désignaler Article
@@ -56,7 +56,7 @@
                   </div>
                   <div v-if="currentUser.id !== currentArticle.userId"> 
                     <div v-if ="currentArticle.signal === false">
-                      <button class="btn btn-warning btn-sm"
+                      <button class="btn btn-warning btn-sm shadow"
                        title="Cliquez pour signaler l'article" 
                         @click="signalArticle(true)">
                         Signaler Article
@@ -68,8 +68,7 @@
                   </div> 
                   <div class="blocComment">          
                     <div class="text-left">                 
-                      <div
-                      v-for="(comment, key) in comments"
+                      <div v-for="(comment, key) in comments" class="bloc2Comment shadow"
                       :key="key"                                       
                       >
                         <div v-if="comment.articleId === currentArticle.id" class="blocCommentBloc"> 
@@ -82,18 +81,18 @@
                           <p class="text-center" ><strong>Auteur du commentaire: </strong><br/>
                            {{ comment.User.firstname }}
                           {{ comment.User.lastname }}</p>                       
-                          <p class=" p-3 mb-2 bg-white"><strong> Texte: </strong><br/>
+                          <p class="blocComment p-3 mb-2 bg-white shadow"><strong> Texte: </strong><br/>
                           {{ comment.text}} </p>                                               
                         </div> 
                         <div v-if="(comment.userId !== currentUser.id) && comment.signal !== true"> 
-                          <button class="btn btn-warning btn-sm" 
+                          <button class="btn btn-warning btn-sm shadow" 
                           title="Cliquez pour signaler le commentaire" 
                           @click="signalComment(comment.id, true)">
                             Signaler Commentaire
                           </button>
                         </div>
                         <div v-if="currentUser.isAdmin && comment.signal">
-                          <button class="btn btn-warning btn-sm" 
+                          <button class="btn btn-warning btn-sm shadow" 
                           title="Cliquez pour désignaler le commentaire" 
                           @click="signalComment(comment.id, false)">
                             Désignaler commentaire
@@ -103,7 +102,7 @@
                     </div>
                   </div>
                 <div class="text-center">
-                  <a class="btn btn-secondary btn-lg"
+                  <a class="btn btn-secondary btn-sm shadow"
                   :href="'/articles/' + currentArticle.id"
                   title="Cliquez pour créer un nouveau commentaire"
                   >
@@ -117,7 +116,7 @@
                 <h1>Liste des Articles</h1> 
                   <p>Click sur un article...</p>
                     <ul class="list-group text-left">                     
-                      <li class="list-group-item"           
+                      <li class="list-group-item shadow-lg"           
                         v-for="(article, index) in articles"
                         :key="index" 
                         @click="setActiveArticle(article, index)"        
@@ -125,10 +124,8 @@
                           <div class="list-row text-center">  
                             <p><strong>Date de Creation:</strong><br/> 
                             {{article.createdAt}}</p>
-
                             <p v-if="article.signal" 
-                            class="text-warning"><strong>Article signalé:</strong></p>
-
+                            class="text-warning"><strong>Article signalé</strong></p>
                             <p><strong>Auteur de l'article:</strong><br/> 
                             {{ article.User.firstname}}
                             {{ article.User.lastname }}</p>                      
@@ -142,7 +139,7 @@
                         <button v-if="currentUser.isAdmin" 
                         class="m-3 btn btn-sm btn-danger"
                          @click="removeAllArticles">
-                          Supprimmez tous les articles
+                          Supprimez tous les articles
                         </button>                                                              
               </div> 
             </div>        
@@ -210,11 +207,16 @@ export default {
         });
     },   
     deleteOneArticle() {
+      if ( confirm("Etes vous sur de vouloir supprimer cet article ?")) {
         userService.delete(this.currentArticle.id)
         .then(response => {
-            console.log(response.data);
+            console.log(response.data);            
             this.refreshList();           
         })
+      }
+      else{
+           console.log("Vous avez annulé la demande");   
+      }
     },
     signalArticle(status) {      
       const data = {       
@@ -287,23 +289,40 @@ export default {
 .list-group { 
  width: auto;
   margin: auto; 
+  border-radius: 20px;
 }
 .list-group-item {
   display: flex;
   flex-direction: column; 
   background-color: #EEEEEE; 
+  border-radius: 20px;
 }
 li span {
   text-align: left;
 }
 .detail {
   text-align: center; 
+  border-radius: 10px;
 }
 .btn {
   margin-bottom: 50px;
   margin-top: 20px;
 }
-.blocCommentBloc {
-  border: 1px black solid;
+.blocComment {
+  border-radius: 20px;
+ /* border: 1px black solid;*/
 }
+.blocText {
+  border-radius: 20px;
+}
+.blocCommentBloc {
+   border-radius: 20px;
+/*  border: 1px black solid;*/
+}
+.bloc2Comment {
+ /* border: 1px black solid;*/
+  border-radius: 20px;
+}
+
+
 </style>

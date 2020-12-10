@@ -1,14 +1,14 @@
 <template>
   <div class="container">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-md-12 shadow-lg bloc">
         <h1 class="text-center">Ajoutez un article</h1>
           <form name="form" @submit.prevent="handleLogin">         
             <div class="form-group">
               <label for="title"><strong>Titre</strong></label>
                 <input
                  type="text"
-                 class="form-control"          
+                 class="form-control shadow-lg"          
                  id="title"    
                  v-model="article.title"
                  v-validate="'required'"
@@ -25,7 +25,7 @@
               <label for="description"><strong>Description</strong></label>
                 <input
                   type="text"
-                  class="form-control"                     
+                  class="form-control shadow-lg"                     
                   id="description"       
                   v-model="article.description"
                   v-validate="'required'"
@@ -42,7 +42,7 @@
             <div class="form-group">
               <label for="text"><strong>Texte</strong></label>
                 <textarea
-                  class="form-control"          
+                  class="form-control shadow-lg"          
                   id="text"      
                   v-model="article.text"
                   v-validate="'required'"
@@ -131,9 +131,8 @@ export default {
 </script>
 
 <style>
-.submit-form {
-  max-width: 300px;
-  margin: auto;
+.bloc {
+   border-radius: 25px;
 }
 
 </style>

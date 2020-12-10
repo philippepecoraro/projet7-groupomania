@@ -1,7 +1,8 @@
 <template>
-  <div class="container">
+  <div class="container">  
     <h1 class="text-center">Profil</h1>
-      <header class="jumbotron">            
+      <header class="jumbotron shadow-lg">     
+        <h4 class="text-center">Edition du Prénom et du Nom</h4>       
          <form name="form" @submit.prevent="updateUser">
             <div class="row">
               <div class="col">
@@ -43,17 +44,19 @@
       {{currentUser.email}}</p>
     <strong>Administrateur:</strong>
    
-    <div v-if="currentUser.isAdmin">        
+    <div v-if="currentUser.isAdmin" class="blocGestion p-3 mb-2 bg-light shadow-lg">        
       <p><strong>Vous êtes administrateur</strong></p>
       <p class="h5">Gestion des signalements</p>
     <a class="btn btn-secondary" href="/admin" role="button">Gestion</a></div>
     <div v-else>
         <strong>Vous n'êtes pas administrateur</strong>
     </div>
-    <div class="text-center"> 
-    <p><strong>Supprimez votre compte</strong></p> 
-    <button @click="deleteAccount" class="btn btn-danger" type="button">Suppression compte</button>
-    </div>
+    <div class="sup text-center">
+      <div class="supCompte text-center"> 
+      <p><strong>Supprimez votre compte</strong></p> 
+      <button @click="deleteAccount" class="btn btn-danger btn-sm shadow-lg" type="button">Suppression compte</button>
+      </div>
+    </div>  
   </div>  
 </template>
 
@@ -102,7 +105,7 @@ export default {
       .then(data => {
         console.log(data);       
         sessionStorage.setItem('user', JSON.stringify(this.user));       
-        alert('Le compte utilisateur a été supprimé avec succès !')
+        alert('Le compte utilisateur a été mis à jour avec succès !')
         this.logOut();     
       })
       .catch(e => {
@@ -110,8 +113,7 @@ export default {
       });
     }, 
     deleteAccount() {
-       if ( confirm("Etes vous sure de vouloir supprimer ce compte ?")) {
-        
+       if ( confirm("Etes vous sure de vouloir supprimer ce compte ?")) {        
       User.deleteUser(this.currentUser.id)
       .then(response => {
         console.log('response:', response)
@@ -120,13 +122,23 @@ export default {
         })
        }
         else {
-          console.log("cancelled");
-        }             
-      
+          console.log("Vous avez annulé la demande");
+        }            
     }
-  }     
-
+  }    
  };  
 
-
 </script>
+<style scoped>
+h4 {
+  margin-bottom: 50px;
+}
+.supCompte {
+  margin-bottom: 50px;
+ /* width: 200px;*/
+}
+header, .blocGestion {
+  border-radius: 20px;
+}
+
+</style>
