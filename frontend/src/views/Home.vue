@@ -10,13 +10,11 @@
               >
               Liste des Articles
               </a> 
-            </div>    
-            <div v-if="currentArticle.signal" class="text-warning text-center">
-              <p class="h4">Article signalé</p>
-            </div> 
-            <div v-else class="title text-center">
-              <h2>Article</h2>            
             </div>  
+             <h1 class="title text-center">Article</h1>
+            <div v-if="currentArticle.signal" class="blocSignal text-center">
+              <p class="h4">Signalé</p>
+            </div>   
               <div class="list-row text-center">
                 <div>
                   <label><strong>Date:</strong></label><br/> 
@@ -62,9 +60,10 @@
                         Signaler Article
                      </button>
                     </div>                
-                  </div>     
+                  </div>    
+                  <div class="blocComment1"> 
                   <div class="text-center">   
-                    <h3>Liste des commentaires</h3> 
+                    <h2>Liste des commentaires</h2> 
                   </div> 
                   <div class="blocComment">          
                     <div class="text-left">                 
@@ -73,7 +72,7 @@
                       >
                         <div v-if="comment.articleId === currentArticle.id" class="blocCommentBloc"> 
                           <div v-if="comment.signal" 
-                          class="text-warning text-center">
+                          class="blocSignal text-center">
                           <p class="h5" >Commentaire signalé</p>
                           </div>                                  
                           <p class="text-center"><strong>Date: </strong><br/> 
@@ -101,6 +100,7 @@
                       </div>                   
                     </div>
                   </div>
+                 </div>
                 <div class="text-center">
                   <a class="btn btn-secondary btn-sm shadow"
                   :href="'/articles/' + currentArticle.id"
@@ -119,13 +119,12 @@
                       <li class="list-group-item shadow-lg"           
                         v-for="(article, index) in articles"
                         :key="index" 
-                        @click="setActiveArticle(article, index)"        
-                        >   
+                        @click="setActiveArticle(article, index)"                             >   
                           <div class="list-row text-center">  
-                            <p><strong>Date de Creation:</strong><br/> 
-                            {{article.createdAt}}</p>
                             <p v-if="article.signal" 
-                            class="text-warning"><strong>Article signalé</strong></p>
+                            class="blocSignal"><strong>Article signalé</strong></p>
+                            <p><strong>Date de Creation:</strong><br/> 
+                            {{article.createdAt}}</p>                         
                             <p><strong>Auteur de l'article:</strong><br/> 
                             {{ article.User.firstname}}
                             {{ article.User.lastname }}</p>                      
@@ -322,6 +321,14 @@ li span {
 .bloc2Comment {
  /* border: 1px black solid;*/
   border-radius: 20px;
+}
+.blocComment1 {
+  border: 1px black solid;
+  border-radius: 20px;
+}
+.blocSignal {
+  background-color: #FDD835;
+  width: auto;
 }
 
 

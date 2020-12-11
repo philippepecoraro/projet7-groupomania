@@ -1,19 +1,16 @@
 <template>
   <div class="container">
   <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
+    <h1 class="text-center">Rentrez vos identifiants</h1>
+    <div class="card card-container">    
       <form name="form" @submit.prevent="handleLogin">
         <div class="form-group">
           <label for="email">Email</label>
           <input
+            id="email"
             v-model="user.email"
             v-validate="'required'"
-            type="text"
+            type="email"
             class="form-control"
             name="email"
           />
@@ -26,6 +23,7 @@
         <div class="form-group">
           <label for="password">Mot de passe</label>
           <input
+            id="password"
             v-model="user.password"
             v-validate="'required'"
             type="password"
@@ -78,7 +76,7 @@ export default {
   methods: {             
          handleLogin() {
       this.loading = true;
-     this.$validator.validateAll().then(isValid => {
+      this.$validator.validateAll().then(isValid => {
         if (!isValid) {
           this.loading = false;
           return;

@@ -1,17 +1,14 @@
 <template>
 <div class="container">
   <div class="col-md-12">
-    <div class="card card-container">
-      <img
-        id="profile-img"
-        src="//ssl.gstatic.com/accounts/ui/avatar_2x.png"
-        class="profile-img-card"
-      />
+    <h1 class="text-center">Inscrivez vous</h1>
+    <div class="card card-container">     
       <form name="form" @submit.prevent="handleRegister">
         <div v-if="!successful">
           <div class="form-group">
             <label for="firstname">Prénom</label>
             <input
+              id="firstname"
               v-model="user.firstname"
               v-validate="'required|min:3|max:20'"
               type="text"
@@ -21,12 +18,14 @@
             <div
               v-if="submitted && errors.has('firstname')"
               class="alert-danger"
-            >{{errors.first('firstname')}}</div>
+              role="alert"
+            >Le prénom est requis!</div>
           </div>
 
           <div class="form-group">
             <label for="lastname">Nom</label>
             <input
+              id="lastname"
               v-model="user.lastname"
               v-validate="'required|min:3|max:20'"
               type="text"
@@ -36,12 +35,14 @@
             <div
               v-if="submitted && errors.has('lastname')"
               class="alert-danger"
-            >{{errors.first('lastname')}}</div>
+              role="alert"
+            >Le nom est requis!</div>
           </div>
 
           <div class="form-group">
             <label for="email">Email</label>
             <input
+              id="email"
               v-model="user.email"
               v-validate="'required|email|max:50'"
               type="email"
@@ -51,11 +52,13 @@
             <div
               v-if="submitted && errors.has('email')"
               class="alert-danger"
-            >{{errors.first('email')}}</div>
+              role="alert"
+            >L'email est requis!</div>
           </div>
           <div class="form-group">
             <label for="password">Mot de passe</label>
             <input
+              id="password"
               v-model="user.password"
               v-validate="'required|min:6|max:40'"
               type="password"
@@ -65,7 +68,8 @@
             <div
               v-if="submitted && errors.has('password')"
               class="alert-danger"
-            >{{errors.first('password')}}</div>
+              role="alert"
+            >Le mot de passe est requis!</div>
           </div>
           <div class="form-group">
             <button class="btn btn-primary btn-block">Sign Up</button>
@@ -77,7 +81,7 @@
         v-if="message"
         class="alert"
         :class="successful ? 'alert-success' : 'alert-danger'"
-      >{{message}}</div>
+      >Utilisateur crée</div>
     </div>
   </div>
 </div>

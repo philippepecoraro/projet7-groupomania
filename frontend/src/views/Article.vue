@@ -1,7 +1,7 @@
 <template>
 <div class="container">
    <div class="row">
-      <div class="col-md-8 text-center">
+      <div class="col-md-10 text-center">
         <div class="text-center">
           <h1>Commentaire</h1>
             <div v-if="!submitted">        
@@ -32,7 +32,7 @@
         <div class="col-md-10 articleBord shadow">
           <div v-if="currentArticle">
             <div class="text-center">
-            <h3>Article</h3>       
+            <h2>Article</h2>       
             <div>
               <p><strong>Titre:</strong><br/> 
               {{ currentArticle.title }}</p>

@@ -1,56 +1,65 @@
 <template>
-  <div class="container">  
-    <h1 class="text-center">Profil</h1>
-      <header class="jumbotron shadow-lg">     
-        <h4 class="text-center">Edition du Prénom et du Nom</h4>       
-         <form name="form" @submit.prevent="updateUser">
-            <div class="row">
-              <div class="col">
+  <div class="container text-center">  
+    <div class="bloc"> 
+      <h1 class="text-center">Profil</h1>
+        <div v-if="currentUser.isAdmin" class="blocGestion">        
+          <p><strong>Vous êtes administrateur</strong></p>
+          <p class="h5">Gestion des signalements</p>
+        <a class="btn btn-secondary" href="/admin" role="button">Gestion</a></div>
+        <div v-else>
+            <strong>Vous n'êtes pas administrateur</strong>
+        </div>          
+            <div class="jumbotron">
+            <h2 class="text-center">Edition du Prénom et du Nom</h2>       
+            <form name="form" @submit.prevent="updateUser">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-group">
+                    <label for="firstname">
+                    <strong>Prénom:</strong></label>
+                    {{currentUser.firstname}}
+                    <input type="text" 
+                    class="form-control"
+                    id="firstname"
+                    v-model="user.firstname"
+                    v-validate="'required'"
+                    name="firstname"
+                    placeholder="Entrez votre prénom"
+                    :class="{ 'is-invalid': submitted && errors.has('firstname')}"
+                    />                 
+                    <div
+                      v-if="submitted && errors.has('firstname')"
+                      class="invalid-feedback">Le prénom est requis</div>                 
+                  </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-group">
+                      <label for="lastname">
+                      <strong> Nom:</strong></label>
+                    {{currentUser.lastname}}
+                    <input type="text"
+                    class="form-control" 
+                    id="lastname"
+                    v-model="user.lastname"
+                    v-validate="'required'"
+                    name="lastname"
+                    placeholder="Entrez votre nom"
+                    :class="{ 'is-invalid': submitted && errors.has('lastname')}"
+                    />
+                      <div
+                      v-if="submitted && errors.has('lastname')"
+                      class="invalid-feedback">Le nom est requis</div>   
+                    </div>
+                  </div>
+                </div>             
                 <div class="form-group">
-                 <label for="firstname">
-                 <strong>Prénom:</strong></label>
-                 {{currentUser.firstname}}
-                 <input type="text" 
-                 class="form-control"
-                 id="firstname"
-                 v-model="user.firstname"
-                 name="firstname"
-                 placeholder="Entrez votre prénom"
-                 />
-                </div>
-              </div>
-              <div class="col">
-                <div class="form-group">
-                  <label for="lastname">
-                  <strong> Nom:</strong></label>
-                 {{currentUser.lastname}}
-                 <input type="text"
-                 class="form-control" 
-                 id="lastname"
-                 v-model="user.lastname"
-                 name="lastname"
-                 placeholder="Entrez votre nom"
-                 />
-                </div>
-              </div>
-            </div> 
-            <div class="form-group">
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>            
-         </form>
-      </header>  
-
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>            
+            </form>
+          </div>
+      </div>  
     <p><strong>Email:</strong><br/>
-      {{currentUser.email}}</p>
-    <strong>Administrateur:</strong>
-   
-    <div v-if="currentUser.isAdmin" class="blocGestion p-3 mb-2 bg-light shadow-lg">        
-      <p><strong>Vous êtes administrateur</strong></p>
-      <p class="h5">Gestion des signalements</p>
-    <a class="btn btn-secondary" href="/admin" role="button">Gestion</a></div>
-    <div v-else>
-        <strong>Vous n'êtes pas administrateur</strong>
-    </div>
+      {{currentUser.email}}</p>   
     <div class="sup text-center">
       <div class="supCompte text-center"> 
       <p><strong>Supprimez votre compte</strong></p> 
@@ -72,6 +81,7 @@ export default {
       firstname: "",
       lastname: ""    
       },  
+      submitted: false
     };
   },
 
@@ -96,12 +106,15 @@ export default {
       this.$router.push('/login');
       },
      
-   updateUser() {
-      const data = {
+  updateUser() {
+    const data = {
         firstname: this.user.firstname,
         lastname: this.user.lastname
       };
-      User.updateName(this.currentUser.id, data)   
+    this.submitted = true;
+    this.$validator.validate().then(valid => {
+      if (valid) {
+           User.updateName(this.currentUser.id, data)   
       .then(data => {
         console.log(data);       
         sessionStorage.setItem('user', JSON.stringify(this.user));       
@@ -111,7 +124,11 @@ export default {
       .catch(e => {
         console.log(e);
       });
-    }, 
+       
+      }
+    });
+  },  
+
     deleteAccount() {
        if ( confirm("Etes vous sure de vouloir supprimer ce compte ?")) {        
       User.deleteUser(this.currentUser.id)
@@ -130,6 +147,7 @@ export default {
 
 </script>
 <style scoped>
+
 h4 {
   margin-bottom: 50px;
 }
@@ -139,6 +157,9 @@ h4 {
 }
 header, .blocGestion {
   border-radius: 20px;
+}
+h4 {
+  margin-top: 50px;
 }
 
 </style>

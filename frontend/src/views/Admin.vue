@@ -1,10 +1,12 @@
 <template>
     <div class="container">
-        <div class="row">         
-            <div class="col-md">              
+      <h1 class="text-center">Commentaires et articles signalés</h1> 
+       <div class="jumbotron"> 
+         <div class="row">  
+            <div class="col-lg-6">              
                 <div class="bloc">
                   <div class="text-center">
-                    <h4>Liste des commentaires signalés</h4>    
+                    <h2>Liste des commentaires signalés</h2>    
                       <p>
                         <button type="button" 
                           class="btn btn-secondary"
@@ -33,10 +35,10 @@
                     </div> 
                 </div>
             </div>        
-              <div class="col-md">
+              <div class="col-lg-6">
                  <div class="bloc">
                    <div class="text-center">
-                    <h4>Liste des Articles signalés</h4>
+                    <h2>Liste des Articles signalés</h2>
                     <p>
                        <button type="button" 
                        class="btn btn-secondary" 
@@ -71,6 +73,7 @@
                   </div>
                </div>
            </div>
+          </div>
        </div> 
     </div>              
 </template>
@@ -139,12 +142,19 @@ export default {
 
 <style scoped>
 
-  .list-group,.list-group-item   {
-    border-radius: 20px;
-    
+h1 {
+  margin-bottom: 50px;
+}
+h2 {
+  font-size: 1.5rem;
+}
+
+.list-group,.list-group-item {
+  border-radius: 20px;    
   }  
-  .list-row {
-    border-radius: 10px;  
+.list-row {
+  border-radius: 10px; 
+  padding: 10px; 
   }
  
 
