@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-
-
 const app = express();
 
 var corsOptions = {
@@ -11,10 +9,10 @@ var corsOptions = {
 
 app.use(cors(corsOptions));
 
-// parse requests of content-type - application/json
+// analyser les requêtes de type de contenu - application / json
 app.use(bodyParser.json());
 
-// parse requests of content-type - application/x-www-form-urlencoded
+// analyser les requêtes de type de contenu - application / x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const db = require("./app/models");
@@ -23,7 +21,7 @@ const Role = db.role;
 db.sequelize.sync();
 
 
-// drop the table if it already exists
+// suppression de la table si elle existe déjà
 /*db.sequelize.sync({ force: true }).then(() => {
     console.log("Drop and re-sync db.");
     /* initial();*/
@@ -39,7 +37,7 @@ require('./app/routes/user.routes')(app);
 require('./app/routes/article.routes')(app);
 require('./app/routes/comment.routes')(app);
 
-// set port, listen for requests
+// définir le port, écouter les requêtes
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}.`);

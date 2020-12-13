@@ -2,7 +2,7 @@ const db = require("../models")
 const Comment = db.comment;
 const User = db.user;
 
-
+// Créer et enregistrer un nouveau commentaire
 exports.createComment = (req, res) => {
     const { text, articleId, userId } = req.body
     if (text && articleId && userId) {
@@ -19,64 +19,8 @@ exports.createComment = (req, res) => {
             })
     }
 };
-exports.deleteComment = (req, res) => {
-    let commentId = req.params.id
-    let userIdForDelete = req.userId
-
-    User.findOne({
-        where: { id: userIdForDelete },
-        include: [
-            {
-                model: Role
-            }
-        ]
-    })
-        .then(user => {
-            let userForDeleteRole = user.roles[0].name;
-            Comment.findOne({
-                where: { id: commentId }
-            })
-                .then(comment => {
-                    if (Comment.userId === userIdForDelete || userForDeleteRole === "admin") {
-                        Comment.destroy({
-                            where: { id: commentId }
-                        })
-                            .then(num => {
-                                if (num == 1) {
-                                    res.send({
-                                        message: "L'article a été supprimé avecsuccès!"
-                                    });
-
-                                } else {
-                                    res.send({
-                                        message: `Impossible de supprimer le commentaire avec l'identifiant=${id}.Peut-être que le commentaire n'a pas été trouvé`
-                                    });
-                                }
-
-                            })
-                            .catch(err => {
-                                res.status(500).send({
-                                    message: "Impossible de supprimer le commentaire avec l'identifiant=" + id
-                                });
-                            });
-                    }
-                })
-                .catch(err => {
-                    res.status(500).send({
-                        message: "Erreur de recherche de commentaire"
-                    })
-                })
-        })
-
-        .catch(err => {
-            res.status(400).send({
-                message: "Erreur sur la recherche de l'utilisateur"
-            })
-        })
-};
-
+//Récupérer tous les commentaires de la base de données.
 exports.findAllComments = (req, res) => {
-    // const title = req.query.title;
     const condition = { articleId: req.params.articleId };
 
     Comment.findAll({ where: condition, include: User })
@@ -90,6 +34,7 @@ exports.findAllComments = (req, res) => {
             });
         });
 };
+// Trouver un seul commentaire avec un id
 exports.findOneComment = (req, res) => {
     const id = req.params.id;
 
@@ -103,7 +48,7 @@ exports.findOneComment = (req, res) => {
             });
         });
 };
-
+//Mettre à jour un commentaire par l'id dans la requête
 exports.updateComment = (req, res) => {
     const id = req.params.id;
 
@@ -127,7 +72,7 @@ exports.updateComment = (req, res) => {
             });
         });
 };
-
+//Récupérer les commentaires signalés
 exports.getSignalComment = (req, res) => {
     const condition = { signal: req.params.signal };
     console.log('signal:', req.params.signal)
@@ -143,5 +88,31 @@ exports.getSignalComment = (req, res) => {
             });
         });
 };
+
+// Supprimer un commentaire avec l'ID spécifié dans la requête
+exports.deleteComment = (req, res) => {
+    const id = req.params.id;
+
+    Comment.destroy({
+        where: { id: id }
+    })
+        .then(num => {
+            if (num == 1) {
+                res.send({
+                    message: "Commentaire supprimé avec succès!"
+                });
+            } else {
+                res.send({
+                    message: `Impossible de supprimer le  commentaire avec id=${id}. Peut-être que le commentaire n'a pas été trouvé!`
+                });
+            }
+        })
+        .catch(err => {
+            res.status(500).send({
+                message: "Ne peut pas supprimer le commentaire avec id=" + id
+            });
+        });
+};
+
 
 

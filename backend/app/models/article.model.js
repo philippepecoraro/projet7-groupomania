@@ -1,3 +1,4 @@
+const moment = require('moment');
 module.exports = (sequelize, Sequelize) => {
     const Article = sequelize.define("Article", {
         title: {
@@ -11,6 +12,12 @@ module.exports = (sequelize, Sequelize) => {
         },
         signal: {
             type: Sequelize.BOOLEAN, defaultValue: false
+        },
+        createdAt: {
+            type: Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
+            }
         }
 
     }, {
@@ -19,5 +26,4 @@ module.exports = (sequelize, Sequelize) => {
 
     return Article;
 };
-
 

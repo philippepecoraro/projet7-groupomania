@@ -3,17 +3,16 @@ const Article = db.article;
 const User = db.user;
 const Op = db.Sequelize.Op;
 
-// Create and Save a new Article
+// Créer et enregistrer un nouvel article
 exports.create = (req, res) => {
-    // Validate request
     if (!req.body.title) {
         res.status(400).send({
-            message: "Content can not be empty!"
+            message: "Le contenu ne peut pas être vide!"
         });
         return;
     }
 
-    // Create a Article
+    // Créer un article
     const article = {
         title: req.body.title,
         description: req.body.description,
@@ -22,7 +21,7 @@ exports.create = (req, res) => {
 
     };
 
-    // Save Article in the database
+    // Sauvegarder un article dans la base de donnée.
     Article.create(article)
         .then(data => {
             res.send(data);
@@ -30,12 +29,12 @@ exports.create = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Article."
+                    err.message || "Une erreur s'est produite lors de la création de l'article."
             });
         });
 };
 
-// Retrieve all Articles from the database.
+//Récupérer tous les articles de la base de données.
 exports.findAll = (req, res) => {
     const title = req.query.title;
     const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
@@ -47,12 +46,12 @@ exports.findAll = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving articles."
+                    err.message || "Une erreur s'est produite lors de la récupération des articles."
             });
         });
 };
 
-// Find a single Article with an id
+// Trouver un seul article avec un id
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
@@ -62,12 +61,12 @@ exports.findOne = (req, res) => {
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error retrieving Article with id=" + id
+                message: "Erreur lors de la récupération de l'article avec l'ID=" + id
             });
         });
 };
 
-// Update a Article by the id in the request
+//Mettre à jour un article par l'id dans la requête
 exports.update = (req, res) => {
     const id = req.params.id;
 
@@ -77,23 +76,23 @@ exports.update = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Article was updated successfully."
+                    message: "L'article a été mis à jour avec succès."
                 });
             } else {
                 res.send({
-                    message: `Cannot update Article with id=${id}. Maybe Article was not found or req.body is empty!`
+                    message: `Impossible de mettre à jour l'article avec  l'id=${id}.Peut-être que l'article n'a pas été trouvé ou que req.body est vide! !`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating Article with id=" + id
+                message: "Erreur lors de la mise à jour de l'article avec l'ID=" + id
             });
         });
 
 };
 
-// Delete a Article with the specified id in the request
+// Supprimer un article avec l'ID spécifié dans la requête
 exports.delete = (req, res) => {
     const id = req.params.id;
 
@@ -103,38 +102,39 @@ exports.delete = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "Article was deleted successfully!"
+                    message: "L'article a été supprimé avec succès!"
                 });
             } else {
                 res.send({
-                    message: `Cannot delete Article with id=${id}. Maybe Article was not found!`
+                    message: `Impossible de supprimer l'article avec l'identifiant=${id}.Peut-être que l'article n'a pas été trouvé !`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete Article with id=" + id
+                message: "Impossible de supprimer l'article avec l'identifiant=" + id
             });
         });
 };
 
-// Delete all Articles from the database.
+//Supprimer tous les articles de la base de données .
 exports.deleteAll = (req, res) => {
     Article.destroy({
         where: {},
         truncate: false
     })
         .then(nums => {
-            res.send({ message: `${nums} Article were deleted successfully!` });
+            res.send({ message: `${nums} L'article a été supprimé avec succès!` });
         })
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while removing all articles."
+                    err.message || "Une erreur s'est produite lors de la suppression de tous les articles."
             });
         });
 };
 
+//Récupérer les articles signalés
 exports.getSignalArticle = (req, res) => {
     const condition = { signal: req.params.signal };
 
@@ -145,7 +145,7 @@ exports.getSignalArticle = (req, res) => {
         .catch(err => {
             res.status(500).send({
                 message:
-                    err.message || "Erreur sur la récupération des commentaires"
+                    err.message || "Erreur sur la récupération des articles"
             });
         });
 }

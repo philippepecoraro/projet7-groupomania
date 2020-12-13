@@ -29,10 +29,6 @@ class UserService {
         return http.delete(API_URL, { headers: authHeader() });
     }
 
-    findByTitle(title) {
-        return http.get(API_URL + `?title=${title}`);
-    }
-
     getAllComment(postId) {
         return http.get(API_URL_COMMENT + "all/" + postId);
     }
@@ -40,12 +36,11 @@ class UserService {
         return http.post(API_URL_COMMENT, data);
     }
 
-    getCommentId(id) {
-        return http.get(API_URL_COMMENT + id);
-    }
-
     updateComment(id, data) {
         return http.put(API_URL_COMMENT + id, data);
+    }
+    deleteComment(id) {
+        return http.delete(API_URL_COMMENT + id);
     }
 
     getAllCommentSignal(signal) {

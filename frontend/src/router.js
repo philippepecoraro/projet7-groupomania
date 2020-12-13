@@ -34,10 +34,6 @@ export const router = new Router({
             component: () => import('./views/Profile.vue')
         },
         {
-            path: "/articles",
-            component: Article
-        },
-        {
             path: "/articles/:id",
             name: 'articlesid',
             component: Article
@@ -59,8 +55,8 @@ router.beforeEach((to, from, next) => {
     const authRequired = !publicPages.includes(to.path);
     const loggedIn = sessionStorage.getItem('user');
 
-    // trying to access a restricted page + not logged in
-    // redirect to login page
+    // tente d'accéder à une page restreinte + non connecté
+    // rediriger vers la page de connexion
     if (authRequired && !loggedIn) {
         next('/login');
     } else {

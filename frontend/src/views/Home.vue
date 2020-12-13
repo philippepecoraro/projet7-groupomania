@@ -175,15 +175,22 @@ export default {
   methods: {
     retrieveArticles() {
       userService.getAll()
-        .then(response => {
-          this.articles = response.data;
-          console.log('dataArticles:',response.data);             
+        .then(response => {    
+          this.articles = response.data;              
         })
         .catch(e => {
           console.log(e);
         });
     },
-
+  
+     dateToFrenchFormat(dateStr) {
+       const splitedDate = this.date.split('T');
+       const date1 = splitedDate[0].split('-').reverse().join('-');
+       const date2 = splitedDate[1].split('-')[0];
+       console.log(dateStr);
+       return 'Publié le ' + date1 + ' à ' + date2;
+     },
+  
     refreshList() {
       this.retrieveArticles();
       this.currentArticle = null;
@@ -192,7 +199,7 @@ export default {
     setActiveArticle(article, index) {
       this.currentArticle = article;
       this.currentIndex = index;
-      this.getComment(article.id);      
+      this.getComment(article.id);           
     },      
     
     removeAllArticles() {
@@ -225,35 +232,30 @@ export default {
       .then(response => {
         console.log(response.data);   
         if (this.currentArticle.signal) {
-        alert("Désignalé");
+        alert("Article désignalé");
         }
         else {
-          alert("Signalé");
+          alert("Article signalé");
         }
-        this.refreshList();
-        this.message = "The article was updated successfully"
-
+        this.refreshList();   
       })
     },
 
-     signalComment(comment, status) {                   
+     signalComment(comment, status) {         
           const data = {
            signal: status,
          }       
       
        userService.updateComment(comment, data)
       .then(response => {
-        console.log(response.data);
-        console.log(comment);
-        console.log(data);  
+        console.log(response.data);       
         if (status) {          
-        alert("Signalé");
+        alert("Commentaire signalé");
         }
         else {
-          alert("Désignalé");
+          alert("Commentaire désignalé");
         }
-        this.refreshList();
-        this.message = "The article was updated successfully"
+        this.refreshList();       
 
       })
     }, 
@@ -261,8 +263,7 @@ export default {
     getComment(postId) {
       userService.getAllComment(postId)
       .then(response => {
-        this.comments = response.data;       
-        console.log('responsedata', response.data);
+        this.comments = response.data;         
       })
       .catch(e => {
         console.log(e);
@@ -308,18 +309,15 @@ li span {
   margin-top: 20px;
 }
 .blocComment {
-  border-radius: 20px;
- /* border: 1px black solid;*/
+  border-radius: 20px; 
 }
 .blocText {
   border-radius: 20px;
 }
 .blocCommentBloc {
    border-radius: 20px;
-/*  border: 1px black solid;*/
 }
 .bloc2Comment {
- /* border: 1px black solid;*/
   border-radius: 20px;
 }
 .blocComment1 {

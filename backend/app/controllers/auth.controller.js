@@ -1,22 +1,13 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const groupomania = require("../models");
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
-const { user } = require("../models");
 require('dotenv').config();
-
 const User = db.user;
-const Role = db.role;
-const Op = db.Sequelize.Op;
+
 
 exports.signup = (req, res) => {
-    // Save User to Database    
     if (req.body.firstname !== "" && req.body.lastname !== "" && req.body.email !== "" && req.body.password !== "") {
-        console.log('ok');
-        console.log(req.body.firstname);
-        console.log(req.body.lastname);
-        console.log(req.body.isAdmin);
         User.create({
             firstname: req.body.firstname,
             lastname: req.body.lastname,
@@ -99,7 +90,7 @@ exports.signupdate = (req, res) => {
             });
         });
 };
-// Delete a User with the specified id in the request
+
 exports.delete = (req, res) => {
     const id = req.params.id;
 

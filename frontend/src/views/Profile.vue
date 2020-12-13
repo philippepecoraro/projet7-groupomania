@@ -5,7 +5,9 @@
         <div v-if="currentUser.isAdmin" class="blocGestion">        
           <p><strong>Vous êtes administrateur</strong></p>
           <p class="h5">Gestion des signalements</p>
-        <a class="btn btn-secondary" href="/admin" role="button">Gestion</a></div>
+        <a class="btn btn-secondary" href="/admin" role="button"
+         title="Cliquez pour rejoindre la page des articles et commentaires signalés">
+         Gestion</a></div>
         <div v-else>
             <strong>Vous n'êtes pas administrateur</strong>
         </div>          
@@ -96,9 +98,7 @@ export default {
   mounted() {
     if (!this.currentUser) {
       this.$router.push('/login');      
-    }
-    console.log(this.$store.state.auth.user);
-    console.log(this.$store.state.auth.status.loggedIn);
+    }    
   }, 
   methods: {
           logOut() {
@@ -152,8 +152,7 @@ h4 {
   margin-bottom: 50px;
 }
 .supCompte {
-  margin-bottom: 50px;
- /* width: 200px;*/
+  margin-bottom: 50px; 
 }
 header, .blocGestion {
   border-radius: 20px;

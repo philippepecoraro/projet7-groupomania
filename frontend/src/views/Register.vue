@@ -1,90 +1,89 @@
 <template>
-<div class="container">
-  <div class="col-md-12">
-    <h1 class="text-center">Inscrivez vous</h1>
-    <div class="card card-container">     
-      <form name="form" @submit.prevent="handleRegister">
-        <div v-if="!successful">
-          <div class="form-group">
-            <label for="firstname">Prénom</label>
-            <input
-              id="firstname"
-              v-model="user.firstname"
-              v-validate="'required|min:3|max:20'"
-              type="text"
-              class="form-control"
-              name="firstname"
-            />
-            <div
-              v-if="submitted && errors.has('firstname')"
-              class="alert-danger"
-              role="alert"
-            >Le prénom est requis!</div>
-          </div>
+  <div class="container">
+    <div class="col-md-12">
+      <h1 class="text-center">Inscrivez vous</h1>
+      <div class="card card-container">     
+        <form name="form" @submit.prevent="handleRegister">
+          <div v-if="!successful">
+            <div class="form-group">
+              <label for="firstname">Prénom</label>
+              <input
+                id="firstname"
+                v-model="user.firstname"
+                v-validate="'required|min:3|max:20'"
+                type="text"
+                class="form-control"
+                name="firstname"
+              />
+              <div
+                v-if="submitted && errors.has('firstname')"
+                class="alert-danger"
+                role="alert"
+              >Le prénom est requis!</div>
+            </div>
 
-          <div class="form-group">
-            <label for="lastname">Nom</label>
-            <input
-              id="lastname"
-              v-model="user.lastname"
-              v-validate="'required|min:3|max:20'"
-              type="text"
-              class="form-control"
-              name="lastname"
-            />
-            <div
-              v-if="submitted && errors.has('lastname')"
-              class="alert-danger"
-              role="alert"
-            >Le nom est requis!</div>
-          </div>
+            <div class="form-group">
+              <label for="lastname">Nom</label>
+              <input
+                id="lastname"
+                v-model="user.lastname"
+                v-validate="'required|min:3|max:20'"
+                type="text"
+                class="form-control"
+                name="lastname"
+              />
+              <div
+                v-if="submitted && errors.has('lastname')"
+                class="alert-danger"
+                role="alert"
+              >Le nom est requis!</div>
+            </div>
 
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input
-              id="email"
-              v-model="user.email"
-              v-validate="'required|email|max:50'"
-              type="email"
-              class="form-control"
-              name="email"
-            />
-            <div
-              v-if="submitted && errors.has('email')"
-              class="alert-danger"
-              role="alert"
-            >L'email est requis!</div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input
+                id="email"
+                v-model="user.email"
+                v-validate="'required|email|max:50'"
+                type="email"
+                class="form-control"
+                name="email"
+              />
+              <div
+                v-if="submitted && errors.has('email')"
+                class="alert-danger"
+                role="alert"
+              >L'email est requis!</div>
+            </div>
+            <div class="form-group">
+              <label for="password">Mot de passe</label>
+              <input
+                id="password"
+                v-model="user.password"
+                v-validate="'required|min:6|max:40'"
+                type="password"
+                class="form-control"
+                name="password"
+              />
+              <div
+                v-if="submitted && errors.has('password')"
+                class="alert-danger"
+                role="alert"
+              >Le mot de passe est requis!</div>
+            </div>
+            <div class="form-group">
+              <button class="btn btn-primary btn-block">Sign Up</button>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input
-              id="password"
-              v-model="user.password"
-              v-validate="'required|min:6|max:40'"
-              type="password"
-              class="form-control"
-              name="password"
-            />
-            <div
-              v-if="submitted && errors.has('password')"
-              class="alert-danger"
-              role="alert"
-            >Le mot de passe est requis!</div>
-          </div>
-          <div class="form-group">
-            <button class="btn btn-primary btn-block">Sign Up</button>
-          </div>
-        </div>
-      </form>
-
-      <div
-        v-if="message"
-        class="alert"
-        :class="successful ? 'alert-success' : 'alert-danger'"
-      >Utilisateur crée</div>
+        </form>
+        <div
+          v-if="message"
+          class="alert"
+          :class="successful ? 'alert-success' : 'alert-danger'"
+        >Utilisateur crée</div>
+      </div>
     </div>
   </div>
-</div>
 </template>
 <script>
 
@@ -120,6 +119,7 @@ export default {
             data => {
               this.message = data.message;
               this.successful = true;
+              alert('Utilisateur crée');
             },
             error => {
               this.message =
@@ -127,6 +127,7 @@ export default {
                 error.message ||
                 error.toString();
               this.successful = false;
+              alert('Utilisateur non crée');
             }
           );
         }

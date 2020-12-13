@@ -100,8 +100,7 @@ export default {
     if (this.article.title && this.article.description && this.article.text) {
        ArticleDataService.create(data)
         .then(response => {
-          this.article.id = response.data.id;
-          console.log(response.data);
+          this.article.id = response.data.id;          
           this.submitted = true;
         })
         .catch(e => {

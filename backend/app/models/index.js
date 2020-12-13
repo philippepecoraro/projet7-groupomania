@@ -20,9 +20,9 @@ groupomania.sequelize = sequelize;
 
 groupomania.user = require("./user.model.js")(sequelize, Sequelize);
 groupomania.article = require("./article.model.js")(sequelize, Sequelize);
-
 groupomania.comment = require("./comment.model.js")(sequelize, Sequelize);
 
+//Création clé étrangère
 groupomania.user.hasOne(groupomania.article, {
     foreignKey: "userId",
     onDelete: "cascade"
