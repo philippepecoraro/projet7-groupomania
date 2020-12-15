@@ -1,5 +1,6 @@
 <template>
     <div class="container">
+      <div v-if="currentUser.isAdmin">
       <h1 class="text-center">Commentaires et articles signalés</h1> 
        <div class="jumbotron"> 
          <div class="row">  
@@ -110,6 +111,7 @@
               </div>
           </div>
        </div> 
+    </div>
     </div>              
 </template>
 
