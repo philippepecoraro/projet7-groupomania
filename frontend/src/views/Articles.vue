@@ -1,30 +1,22 @@
 <template>
-  <div class="container">
-    <div class="list row">
-      <div class="col-md-12">
-        <div class="detail shadow">
-
-          <div class="text-left shadow-lg" v-if="currentArticle">
-            <div class="text-center">
-              <a class="btn btn-secondary btn-lg shadow-lg" role="button"
-              :href= "'/home'" title="Cliquez pour rejoindre la page d'accueil"
-              >
-              Liste des Articles
-              </a> 
+   <div class="text-left shadow-lg" v-if="currentArticle">
+            <div class="text-center">             
             </div>  
              <h1 class="title text-center">Article</h1>
             <div v-if="currentArticle.signal" class="blocSignal text-center">
               <p class="h4">Signalé</p>
-            </div>   
-              <div class="list-row text-center">
+            </div>  
+                <div class="list-row text-center">
                 <div>
                   <label><strong>Date:</strong></label><br/> 
                   {{ currentArticle.createdAt }}
                 </div>
                 <div>
                   <label><strong> Auteur de l'article:</strong></label><br/> 
-                  {{ currentArticle.User.firstname }} 
-                    {{ currentArticle.User.lastname }}
+                  
+
+
+
                 </div>                          
                 <div>
                   <label><strong>Titre:</strong></label><br/> 
@@ -35,6 +27,8 @@
                   {{ currentArticle.description }}
                 </div> 
                </div>
+
+
                   <div class="blocText text-left p-3 mb-2 bg-white shadow-lg">
                   <label><strong>Texte:</strong></label><br/> 
                   {{ currentArticle.text }}
@@ -102,80 +96,76 @@
                     </div>
                   </div>
                  </div>
-                <div class="text-center">
-                  <a class="btn btn-secondary btn-sm shadow"
-                  :href="'/articles/' + currentArticle.id"
-                  title="Cliquez pour créer un nouveau commentaire"
-                  >
-                  Creer un nouveau commentaire
-                  </a> 
-                </div>           
-          </div>    
+                
 
-          <div v-else>             
-            <div class="col-md-12">  
-              <div class="bloc">         
-                <h1>Liste des Articles</h1> 
-                  <p>Click sur un article...</p>
-                    <ul class="list-group text-left">                     
-                      <li class="list-group-item shadow-lg"           
-                        v-for="(article, index) in articles"
-                        :key="index" 
-                        @click="setActiveArticle(article, index)"                             >   
-                          <div class="list-row text-center">  
-                            <p v-if="article.signal" 
-                            class="blocSignal"><strong>Article signalé</strong></p>
-                            <p><strong>Date de Creation:</strong><br/> 
-                            {{article.createdAt}}</p>                         
-                            <p><strong>Auteur de l'article:</strong><br/> 
-                            {{ article.User.firstname}}
-                            {{ article.User.lastname }}</p>                      
-                            <p><strong>Titre:</strong><br/> 
-                            {{ article.title }}</p> 
-                            <p><strong>Description:</strong></p>
-                            <p> {{ article.description}} </p>                          
-                          </div>                                                                             
-                      </li>                      
-                    </ul>                         
-                        <button v-if="currentUser.isAdmin" 
-                        class="m-3 btn btn-sm btn-danger"
-                         @click="removeAllArticles">
-                          Supprimez tous les articles
-                        </button>                                                              
+               <div class="row">
+        <div class="col-md-12 text-center">
+          <div class="text-center">
+            <h3>Ajoutez un commentaire</h3>
+              <div v-if="!submitted">        
+                <div class="form-group">
+                <label for="text"><strong>Texte</strong> (255 caractères max) </label>
+                <input
+                  type="text"
+                  class="form-control shadow-lg"
+                  id="text"          
+                  v-model="comment.text"
+                  name="text"
+                  placeholder="Entrez votre texte"         
+                  />    
+                  <div class="form-group text-left">
+                  <button @click="saveComment" class="btn btn-primary">       
+                    Submit</button> 
+                  </div>                 
+                </div>
+              </div>              
+              <div v-else>
+                <p class="h4">Envoyé avec succès!</p>
+                <button class="btn btn-success" @click="newComment">Ajoutez un Commentaire</button>
               </div> 
-            </div>        
-          </div>      
-        </div>
-      </div>   
-    </div>  
- </div>
+          </div>
+        </div> 
+    </div>
+
+
+          </div>     
+    
 </template>
 
-<script>  
+<script>
+
+/*  {{ currentArticle.User.firstname }} 
+                    {{ currentArticle.User.lastname }}*/
+
 
 import userService from '../services/user.service';
-
 export default {
-  name: 'Home',
-  data() {
-    return {
-      articles:[],
-       currentArticle: null,
-      currentIndex: -1,
-      title: "",
-      comments:[],   
-      message: "",   
-      currentComment: null,
-      currentKey: -1
-    };
-  },
-  computed: {
+    name: 'Article',
+    data() {
+        return {
+          comment: {
+            text: "",
+            articleId: "",
+            userId: ""
+          },
+        articles:[],
+        currentArticle: null,
+        currentIndex: -1,
+        title: "",
+        comments:[],   
+        message: "",   
+      //  currentComment: null,
+        currentKey: -1,
+        submitted: false
+        };
+    },
+     computed: {
     currentUser() {
       return this.$store.state.auth.user;
     }
   },
-  methods: {
-    retrieveArticles() {
+    methods: {
+   /*     retrieveArticles() {
       userService.getAll()
         .then(response => {    
           this.articles = response.data;              
@@ -183,24 +173,20 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    }, 
+    },*/     
   
-    refreshList() {
+    /*refreshList() {
       this.retrieveArticles();
       this.currentArticle = null;
       this.currentIndex = -1;       
-    },
-    setActiveArticle(article, index) {     
+    },*/
+   /* setActiveArticle(article, index) {
       this.currentArticle = article;
       this.currentIndex = index;
-      this.getComment(article.id); 
-      console.log('article:', article.id)
-
-     this.$router.push('/articles/' + this.currentArticle.id);    
-     console.log('/articles/:' + this.currentArticle.id);    
-    },      
+      this.getComment(article.id);           
+    },    */  
     
-    removeAllArticles() {
+   /* removeAllArticles() {
       userService.deleteAll()
         .then(response => {
           console.log("responseRemove:" ,response.data);
@@ -209,13 +195,22 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    },   
+    },   */
+ /*   retrieveArticles() {
+      this.currentArticle = this.article.id;   
+       this.getComment(this.article.id);
+      //  this.getArticle();
+    },  */
+
     deleteOneArticle() {
       if ( confirm("Etes vous sur de vouloir supprimer cet article ?")) {
         userService.delete(this.currentArticle.id)
         .then(response => {
-            console.log(response.data);            
-            this.refreshList();           
+            console.log(response.data);  
+               this.$router.push('/home');       
+         //   this.refreshList();  
+            //    document.location.reload();  
+
         })
       }
       else{
@@ -231,11 +226,13 @@ export default {
         console.log(response.data);   
         if (this.currentArticle.signal) {
         alert("Article désignalé");
+      //  document.location.reload();
         }
         else {
           alert("Article signalé");
         }
-        this.refreshList();   
+       // this.refreshList();   
+        document.location.reload();
       })
     },
 
@@ -249,11 +246,14 @@ export default {
         console.log(response.data);       
         if (status) {          
         alert("Commentaire signalé");
+        //document.location.reload();
         }
         else {
           alert("Commentaire désignalé");
+         // document.location.reload();
         }
-        this.refreshList();       
+       // this.refreshList(); 
+             document.location.reload();
 
       })
     }, 
@@ -266,66 +266,60 @@ export default {
       .catch(e => {
         console.log(e);
       })
-    }
-  },
+    },
+        getArticle(id) {
+      userService.get(id)
+        .then(response => {
+          this.currentArticle = response.data;                  
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    },
+     saveComment() {
+      const data = {
+        text: this.comment.text,
+        articleId: this.currentArticle.id,     
+        userId: this.currentUser.id       
+      };
 
-  mounted() {
-    this.retrieveArticles();   
-   }
-  };
+    if (this.comment.text) {
+      userService.createComment(data)
+        .then(response => {
+          this.comment.id = response.data.id;      
+          this.submitted = true;
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
+    },  
+    newComment() {
+     this.submitted = false;
+     this.comment = {};    
+    },
+   
+  },
+    mounted() {
+      this.message = '';
+      this.getArticle(this.$route.params.id);   
+      console.log(' this.$route.params.id:', this.$route.params.id);
+      this.getComment(this.$route.params.id);
+  
+    console.log('this.article:', this.article);
+    console.log('this.comment:', this.comment);
+    console.log('this.currentArticle:', this.currentArticle);
+    console.log('this.currentComment:',this.currentComment);
+    }  
+
+    };
 
 </script>
 
 <style scoped>
-
-.list {
-  background-color: #f7f7f7;
-  text-align: center;
-  max-width: 900px;
-  margin: auto;
-}
-.list-group { 
- width: auto;
-  margin: auto; 
-  border-radius: 20px;
-}
-.list-group-item {
-  display: flex;
-  flex-direction: column; 
-  background-color: #EEEEEE; 
-  border-radius: 20px;
-}
-li span {
-  text-align: left;
-}
-.detail {
-  text-align: center; 
-  border-radius: 10px;
-}
-.btn {
-  margin-bottom: 50px;
-  margin-top: 20px;
-}
-.blocComment {
-  border-radius: 20px; 
-}
-.blocText {
-  border-radius: 20px;
-}
-.blocCommentBloc {
-   border-radius: 20px;
-}
-.bloc2Comment {
-  border-radius: 20px;
-}
-.blocComment1 {
-  border: 1px black solid;
-  border-radius: 20px;
-}
 .blocSignal {
   background-color: #FDD835;
   width: auto;
 }
-
 
 </style>

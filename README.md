@@ -11,3 +11,5 @@ npm start pour lancer le serveur avec nodemon.
 La partie frontend fonctionne avec Vue.js et bootstrap
 
 npm run serve pour lancer le frontend
+
+L'application fonctionne en localhost sur: http://localhost:8081/

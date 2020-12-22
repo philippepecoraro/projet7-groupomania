@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-md-12 shadow-lg bloc">
         <h1 class="text-center">Ajoutez un article</h1>
-          <form name="form" @submit.prevent="handleLogin">         
+          <form name="form" @submit.prevent="handleArticle">         
             <div class="form-group">
               <label for="title"><strong>Titre</strong></label>
                 <input
@@ -80,7 +80,8 @@ export default {
         text: "",     
         userId: ""
       },
-      submitted: false,    
+      submitted: false, 
+      loading: false   
     };
   },
   computed: {
@@ -96,34 +97,39 @@ export default {
         text: this.article.text,
         userId: this.currentUser.id        
       };
+           if (this.article.title && this.article.description && this.article.text) {
+                ArticleDataService.create(data)
+                  .then(response => {
+                    this.article.id = response.data.id;          
+                    this.submitted = true;
+                    if (response) {
+                      window.alert('Article ajouté avec succès!');
+                      this.$router.push('/home');
+                    }
+                  })
+                  .catch(e => {
+                    console.log(e);
+                    window.alert('L\'article n\'a pas été ajouté!')
+                  });
+              }  
 
-    if (this.article.title && this.article.description && this.article.text) {
-       ArticleDataService.create(data)
-        .then(response => {
-          this.article.id = response.data.id;          
-          this.submitted = true;
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
-    },    
+    },        
     newArticle() {
       this.submitted = false;
       this.article = {};
     }, 
-    handleLogin() {    
+
+    handleArticle() {    
+      this.loading = false;
       this.submitted = true;
       this.$validator.validate().then(isValid => {
         if (!isValid) {      
-          window.alert("L'article n'a pas été ajouté!");
+        //  window.alert("L'article n'a pas été ajouté!");
+        this.loading = false;
           return;
-        }  else {             
-              window.alert('Article ajouté avec succès!');
-              this.$router.push('/home');
-            }                           
-        }        
-      );          
+        }                     
+      }        
+      );  
     }        
   }     
 };

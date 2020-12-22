@@ -36,10 +36,7 @@ exports.create = (req, res) => {
 
 //Récupérer tous les articles de la base de données.
 exports.findAll = (req, res) => {
-    const title = req.query.title;
-    const condition = title ? { title: { [Op.like]: `%${title}%` } } : null;
-
-    Article.findAll({ where: condition, include: User })
+    Article.findAll({ order: [['createdAt', 'DESC']], include: User })
         .then(data => {
             res.send(data);
         })
@@ -50,6 +47,7 @@ exports.findAll = (req, res) => {
             });
         });
 };
+
 
 // Trouver un seul article avec un id
 exports.findOne = (req, res) => {

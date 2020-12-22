@@ -15,15 +15,15 @@ exports.signup = (req, res) => {
             password: bcrypt.hashSync(req.body.password, 8),
         })
             .then(user => {
-                res.status(200).send({ message: "User create" });
+                res.status(200).send({ message: "Utilisateur créé !" });
             })
 
             .catch(err => {
-                res.status(500).send({ error: err.message });
+                res.status(500).send({ message: "Utilisateur non créé !" });
                 console.log("signup erreur 500");
             });
     } else {
-        res.status(400).json({ error: "empty body" });
+        res.status(400).json({ error: "Contenu vide" });
     }
 };
 
@@ -35,7 +35,7 @@ exports.signin = (req, res) => {
     })
         .then(user => {
             if (!user) {
-                return res.status(404).send({ message: "User Not found." });
+                return res.status(401).send({ message: "l'utilisateur n'a pas été trouvé." });
             }
 
             var passwordIsValid = bcrypt.compareSync(
@@ -46,11 +46,11 @@ exports.signin = (req, res) => {
             if (!passwordIsValid) {
                 return res.status(401).send({
                     accessToken: null,
-                    message: "Invalid Password!"
+                    message: "Mot de passe invalide!"
                 });
             }
 
-            var token = jwt.sign({ id: user.id }, config.secret, {
+            const token = jwt.sign({ id: user.id, isAdmin: user.isAdmin }, config.secret, {
                 expiresIn: '24h'
             });
 
@@ -76,17 +76,17 @@ exports.signupdate = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.status(200).send({
-                    message: "Updated"
+                    message: "Mis à jour"
                 });
             } else {
                 res.status(400).send({
-                    message: `Cannot updated user with id=${id}.`
+                    message: `Ne peut pas mettre à jour un utilisateur avec id=${id}.`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Error updating user with id=" + id
+                message: "Erreur de mise à jour utilisateur avec id=" + id
             });
         });
 };
@@ -100,17 +100,17 @@ exports.delete = (req, res) => {
         .then(num => {
             if (num == 1) {
                 res.send({
-                    message: "User was deleted successfully!"
+                    message: "Utilisateur supprimé avec succès!"
                 });
             } else {
                 res.send({
-                    message: `Cannot delete User with id=${id}. Maybe User was not found!`
+                    message: `Impossible de supprimer l'utilisateur avec id=${id}. Peut-être que l'utilisateur n'a pas été trouvé!`
                 });
             }
         })
         .catch(err => {
             res.status(500).send({
-                message: "Could not delete User with id=" + id
+                message: "Impossible de supprimer l'utilisateur avec id=" + id
             });
         });
 };

@@ -21,7 +21,7 @@
            <ul class="navbar-nav ml-auto">
             <li class="nav-item">
               <router-link to="/register" class="nav-link">
-                <font-awesome-icon icon="user-plus" />Sign Up
+                <font-awesome-icon icon="user-plus" />Inscription
               </router-link>
             </li>
             <li class="nav-item">

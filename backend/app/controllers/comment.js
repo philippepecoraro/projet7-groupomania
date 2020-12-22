@@ -22,6 +22,7 @@ exports.createComment = (req, res) => {
 //Récupérer tous les commentaires de la base de données.
 exports.findAllComments = (req, res) => {
     const condition = { articleId: req.params.articleId };
+    console.log('condition:', condition)
 
     Comment.findAll({ where: condition, include: User })
         .then(data => {

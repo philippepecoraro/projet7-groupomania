@@ -82,6 +82,8 @@ export default {
           this.$store.dispatch('auth/login', this.user).then(
             () => {
               this.$router.push('/home');
+          
+              console.log(this.user);
             },
             error => {
               this.loading = false;
@@ -92,6 +94,8 @@ export default {
             }
           );
         }
+
+
 
       });
     }

@@ -72,15 +72,17 @@
               >Le mot de passe est requis!</div>
             </div>
             <div class="form-group">
-              <button class="btn btn-primary btn-block">Sign Up</button>
+              <button class="btn btn-primary btn-block">Inscription</button>
             </div>
           </div>
+         
         </form>
-        <div
-          v-if="message"
+        <div v-if="message"
           class="alert"
-          :class="successful ? 'alert-success' : 'alert-danger'"
-        >Utilisateur crée</div>
+          
+          :class="{'alert-success': successful, 'alert-danger': !successful}">
+          {{ message}}
+        </div>
       </div>
     </div>
   </div>
@@ -88,6 +90,12 @@
 <script>
 
 import User from '../models/user';
+
+/* <div
+          v-if="message"
+          class="alert"
+          :class="successful ? 'alert-success' : 'alert-danger'"
+        >Utilisateur crée</div>*/
 
 export default {
   name: 'Register',
@@ -99,11 +107,12 @@ export default {
       message: ''
     };
   },
-  computed: {
+  computed: {    
     loggedIn() {
       return this.$store.state.auth.status.loggedIn;
-    }
-  },
+    }    
+  },   
+
   mounted() {
     if (this.loggedIn) {
       this.$router.push('/profile');
@@ -117,17 +126,21 @@ export default {
         if (isValid) {
           this.$store.dispatch('auth/register', this.user).then(
             data => {
+              console.log('store:', this.$store.state.auth.status.loggedIn);
               this.message = data.message;
               this.successful = true;
               alert('Utilisateur crée');
+             // this.$router.push('/login');
             },
             error => {
               this.message =
                 (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
+                console.log('store:', this.$store.state.auth.status.loggedIn);
               this.successful = false;
-              alert('Utilisateur non crée');
+              alert('Utilisateur non crée. Veuillez vous réinscrire');
+             // document.location.reload();
             }
           );
         }
