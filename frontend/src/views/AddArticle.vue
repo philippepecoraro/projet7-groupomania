@@ -56,8 +56,8 @@
                 </div>
             </div>
             <div class="form-group">
-              <button @click="saveArticle" class="btn btn-primary">       
-              Submit</button> 
+              <button type="submit" class="btn btn-primary">       
+              Envoyer</button> 
             </div>             
           </form>     
       </div>
@@ -73,15 +73,13 @@ export default {
   name: "add-article",
   data() {
     return {
-      article: {
-        id: null,
+      article: {     
         title: "",
         description: "",
         text: "",     
         userId: ""
       },
-      submitted: false, 
-      loading: false   
+      submitted: false      
     };
   },
   computed: {
@@ -95,41 +93,30 @@ export default {
         title: this.article.title,
         description: this.article.description,
         text: this.article.text,
-        userId: this.currentUser.id        
-      };
-           if (this.article.title && this.article.description && this.article.text) {
-                ArticleDataService.create(data)
-                  .then(response => {
-                    this.article.id = response.data.id;          
-                    this.submitted = true;
-                    if (response) {
-                      window.alert('Article ajouté avec succès!');
-                      this.$router.push('/home');
-                    }
-                  })
-                  .catch(e => {
-                    console.log(e);
-                    window.alert('L\'article n\'a pas été ajouté!')
-                  });
-              }  
-
+        userId: this.currentUser.id     
+      };           
+          ArticleDataService.create(data)
+           .then(response => {
+             this.article.id = response.data.id;          
+             this.submitted = true;
+              if (response) {
+                window.alert('Article ajouté avec succès!');
+                this.$router.push('/home');
+                  }
+                })
+            .catch(e => {
+              console.log(e);
+              window.alert('L\'article n\'a pas été ajouté!');
+                 });                    
     },        
-    newArticle() {
-      this.submitted = false;
-      this.article = {};
-    }, 
-
-    handleArticle() {    
-      this.loading = false;
+ 
+    handleArticle() {        
       this.submitted = true;
       this.$validator.validate().then(isValid => {
-        if (!isValid) {      
-        //  window.alert("L'article n'a pas été ajouté!");
-        this.loading = false;
-          return;
-        }                     
-      }        
-      );  
+        if (isValid) {      
+            this.saveArticle();           
+        }                            
+      });  
     }        
   }     
 };

@@ -5,33 +5,27 @@ const Op = db.Sequelize.Op;
 
 // Créer et enregistrer un nouvel article
 exports.create = (req, res) => {
-    if (!req.body.title) {
-        res.status(400).send({
-            message: "Le contenu ne peut pas être vide!"
-        });
-        return;
-    }
-
-    // Créer un article
-    const article = {
-        title: req.body.title,
-        description: req.body.description,
-        text: req.body.text,
-        userId: req.body.userId
-
-    };
-
-    // Sauvegarder un article dans la base de donnée.
-    Article.create(article)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message:
-                    err.message || "Une erreur s'est produite lors de la création de l'article."
+    if (req.body.title && req.body.description && req.body.text && req.body.userId) {
+        // Créer un article
+        const article = {
+            title: req.body.title,
+            description: req.body.description,
+            text: req.body.text,
+            userId: req.body.userId
+        };
+        Article.create(article)
+            .then(data => {
+                res.status(201).send(data);
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message:
+                        err.message || "Une erreur s'est produite lors de la création de l'article."
+                });
             });
-        });
+    } else {
+        res.status(400).json({ error: "Contenu vide" });
+    }
 };
 
 //Récupérer tous les articles de la base de données.
@@ -48,12 +42,11 @@ exports.findAll = (req, res) => {
         });
 };
 
-
 // Trouver un seul article avec un id
 exports.findOne = (req, res) => {
     const id = req.params.id;
 
-    Article.findByPk(id)
+    Article.findOne({ where: { id: id }, include: User })
         .then(data => {
             res.send(data);
         })
@@ -64,7 +57,7 @@ exports.findOne = (req, res) => {
         });
 };
 
-//Mettre à jour un article par l'id dans la requête
+//Signaler un article
 exports.update = (req, res) => {
     const id = req.params.id;
 

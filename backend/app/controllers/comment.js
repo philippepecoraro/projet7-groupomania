@@ -17,6 +17,8 @@ exports.createComment = (req, res) => {
             .catch((err) => {
                 res.status(500).send({ message: err.message });
             })
+    } else {
+        res.status(400).json({ error: "Contenu vide" });
     }
 };
 //Récupérer tous les commentaires de la base de données.
@@ -35,21 +37,8 @@ exports.findAllComments = (req, res) => {
             });
         });
 };
-// Trouver un seul commentaire avec un id
-exports.findOneComment = (req, res) => {
-    const id = req.params.id;
 
-    Comment.findByPk(id)
-        .then(data => {
-            res.send(data);
-        })
-        .catch(err => {
-            res.status(500).send({
-                message: "Erreur sur la récupération des commentaires avec id=" + id
-            });
-        });
-};
-//Mettre à jour un commentaire par l'id dans la requête
+//Signaler un commentaire
 exports.updateComment = (req, res) => {
     const id = req.params.id;
 

@@ -22,7 +22,7 @@ groupomania.user = require("./user.js")(sequelize, Sequelize);
 groupomania.article = require("./article.js")(sequelize, Sequelize);
 groupomania.comment = require("./comment.js")(sequelize, Sequelize);
 
-//Création clé étrangère
+//Création clés étrangère
 groupomania.user.hasOne(groupomania.article, {
     foreignKey: "userId",
     onDelete: "cascade"

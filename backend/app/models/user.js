@@ -8,7 +8,11 @@ module.exports = (sequelize, Sequelize) => {
         },
         email: {
             type: Sequelize.STRING,
-            unique: true
+            unique: {
+                args: true,
+                //Remplace le message standard
+                msg: 'Email déjà utilisé !'
+            }
         },
         password: {
             type: Sequelize.STRING
@@ -23,4 +27,5 @@ module.exports = (sequelize, Sequelize) => {
 
     return User;
 };
+
 

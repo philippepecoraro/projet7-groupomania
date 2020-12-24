@@ -72,16 +72,16 @@
               >Le mot de passe est requis!</div>
             </div>
             <div class="form-group">
-              <button class="btn btn-primary btn-block">Inscription</button>
+              <button type="submit" class="btn btn-primary btn-block">
+                Inscription</button>
             </div>
           </div>
          
         </form>
         <div v-if="message"
-          class="alert"
-          
+          class="alert text-center"          
           :class="{'alert-success': successful, 'alert-danger': !successful}">
-          {{ message}}
+          {{ message}} Veuillez vous connecter
         </div>
       </div>
     </div>
@@ -90,12 +90,6 @@
 <script>
 
 import User from '../models/user';
-
-/* <div
-          v-if="message"
-          class="alert"
-          :class="successful ? 'alert-success' : 'alert-danger'"
-        >Utilisateur crée</div>*/
 
 export default {
   name: 'Register',
@@ -128,19 +122,19 @@ export default {
             data => {
               console.log('store:', this.$store.state.auth.status.loggedIn);
               this.message = data.message;
+              console.log('this.message:', this.message)
               this.successful = true;
-              alert('Utilisateur crée');
-             // this.$router.push('/login');
+              alert('Utilisateur crée');             
             },
             error => {
               this.message =
                 (error.response && error.response.data) ||
                 error.message ||
                 error.toString();
+                console.log('error.message:', error.message);
                 console.log('store:', this.$store.state.auth.status.loggedIn);
               this.successful = false;
-              alert('Utilisateur non crée. Veuillez vous réinscrire');
-             // document.location.reload();
+              alert('Utilisateur non crée. Veuillez vous réinscrire');             
             }
           );
         }

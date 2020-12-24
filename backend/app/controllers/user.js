@@ -19,7 +19,7 @@ exports.signup = (req, res) => {
             })
 
             .catch(err => {
-                res.status(500).send({ message: "Utilisateur non créé !" });
+                res.status(500).send({ message: err.message });
                 console.log("signup erreur 500");
             });
     } else {
@@ -69,26 +69,30 @@ exports.signin = (req, res) => {
 };
 
 exports.signupdate = (req, res) => {
-    const id = req.params.id;
-    User.update(req.body, {
-        where: { id: id }
-    })
-        .then(num => {
-            if (num == 1) {
-                res.status(200).send({
-                    message: "Mis à jour"
-                });
-            } else {
-                res.status(400).send({
-                    message: `Ne peut pas mettre à jour un utilisateur avec id=${id}.`
-                });
-            }
+    if (req.body.firstname !== "" && req.body.lastname !== "") {
+        const id = req.params.id;
+        User.update(req.body, {
+            where: { id: id }
         })
-        .catch(err => {
-            res.status(500).send({
-                message: "Erreur de mise à jour utilisateur avec id=" + id
+            .then(num => {
+                if (num == 1) {
+                    res.status(200).send({
+                        message: "Mis à jour"
+                    });
+                } else {
+                    res.status(400).send({
+                        message: `Ne peut pas mettre à jour un utilisateur avec id=${id}.`
+                    });
+                }
+            })
+            .catch(err => {
+                res.status(500).send({
+                    message: "Erreur de mise à jour utilisateur avec id=" + id
+                });
             });
-        });
+    } else {
+        res.status(400).json({ error: "Contenu vide" });
+    }
 };
 
 exports.delete = (req, res) => {

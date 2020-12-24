@@ -3,116 +3,7 @@
     <div class="list row">
       <div class="col-md-12">
         <div class="detail shadow">
-
-          <div class="text-left shadow-lg" v-if="currentArticle">
-            <div class="text-center">
-              <a class="btn btn-secondary btn-lg shadow-lg" role="button"
-              :href= "'/home'" title="Cliquez pour rejoindre la page d'accueil"
-              >
-              Liste des Articles
-              </a> 
-            </div>  
-             <h1 class="title text-center">Article</h1>
-            <div v-if="currentArticle.signal" class="blocSignal text-center">
-              <p class="h4">Signalé</p>
-            </div>   
-              <div class="list-row text-center">
-                <div>
-                  <label><strong>Date:</strong></label><br/> 
-                  {{ currentArticle.createdAt }}
-                </div>
-                <div>
-                  <label><strong> Auteur de l'article:</strong></label><br/> 
-                  {{ currentArticle.User.firstname }} 
-                    {{ currentArticle.User.lastname }}
-                </div>                          
-                <div>
-                  <label><strong>Titre:</strong></label><br/> 
-                  {{ currentArticle.title }}
-                </div> 
-                <div>
-                  <label><strong>Description:</strong></label><br/> 
-                  {{ currentArticle.description }}
-                </div> 
-               </div>
-                  <div class="blocText text-left p-3 mb-2 bg-white shadow-lg">
-                  <label><strong>Texte:</strong></label><br/> 
-                  {{ currentArticle.text }}
-                  </div> 
-                    <div v-if="currentUser.isAdmin || currentUser.id === currentArticle.userId">
-                    <button class="btn btn-danger btn-sm shadow" 
-                    title="Cliquez pour supprimer l'article"
-                     @click="deleteOneArticle">
-                      Supprimer Article
-                    </button>
-                  </div>                          
-                  <div v-if="currentUser.isAdmin && currentArticle.signal">
-                    <button class="btn btn-warning btn-sm shadow" 
-                    title="Cliquez pour désignaler l'article"
-                    @click="signalArticle(false)">
-                      Désignaler Article
-                  </button>
-                  </div>
-                  <div v-if="currentUser.id !== currentArticle.userId"> 
-                    <div v-if ="currentArticle.signal === false">
-                      <button class="btn btn-warning btn-sm shadow"
-                       title="Cliquez pour signaler l'article" 
-                        @click="signalArticle(true)">
-                        Signaler Article
-                     </button>
-                    </div>                
-                  </div>    
-                  <div class="blocComment1"> 
-                  <div class="text-center">   
-                    <h2>Liste des commentaires</h2> 
-                  </div> 
-                  <div class="blocComment">          
-                    <div class="text-left">                 
-                      <div v-for="(comment, key) in comments" class="bloc2Comment shadow"
-                      :key="key"                                       
-                      >
-                        <div v-if="comment.articleId === currentArticle.id" class="blocCommentBloc"> 
-                          <div v-if="comment.signal" 
-                          class="blocSignal text-center">
-                          <p class="h5" >Commentaire signalé</p>
-                          </div>                                  
-                          <p class="text-center"><strong>Date: </strong><br/> 
-                          {{ comment.createdAt}} </p>
-                          <p class="text-center" ><strong>Auteur du commentaire: </strong><br/>
-                           {{ comment.User.firstname }}
-                          {{ comment.User.lastname }}</p>                       
-                          <p class="blocComment p-3 mb-2 bg-white shadow"><strong> Texte: </strong><br/>
-                          {{ comment.text}} </p>                                               
-                        </div> 
-                        <div v-if="(comment.userId !== currentUser.id) && comment.signal !== true"> 
-                          <button class="btn btn-warning btn-sm shadow" 
-                          title="Cliquez pour signaler le commentaire" 
-                          @click="signalComment(comment.id, true)">
-                            Signaler Commentaire
-                          </button>
-                        </div>
-                        <div v-if="currentUser.isAdmin && comment.signal">
-                          <button class="btn btn-warning btn-sm shadow" 
-                          title="Cliquez pour désignaler le commentaire" 
-                          @click="signalComment(comment.id, false)">
-                            Désignaler commentaire
-                          </button>
-                        </div>                 
-                      </div>                   
-                    </div>
-                  </div>
-                 </div>
-                <div class="text-center">
-                  <a class="btn btn-secondary btn-sm shadow"
-                  :href="'/articles/' + currentArticle.id"
-                  title="Cliquez pour créer un nouveau commentaire"
-                  >
-                  Creer un nouveau commentaire
-                  </a> 
-                </div>           
-          </div>    
-
-          <div v-else>             
+          <div>             
             <div class="col-md-12">  
               <div class="bloc">         
                 <h1>Liste des Articles</h1> 
@@ -160,13 +51,8 @@ export default {
   data() {
     return {
       articles:[],
-       currentArticle: null,
-      currentIndex: -1,
-      title: "",
-      comments:[],   
-      message: "",   
-      currentComment: null,
-      currentKey: -1
+      currentArticle: null,
+      currentIndex: -1            
     };
   },
   computed: {
@@ -192,12 +78,10 @@ export default {
     },
     setActiveArticle(article, index) {     
       this.currentArticle = article;
-      this.currentIndex = index;
-      this.getComment(article.id); 
-      console.log('article:', article.id)
-
-     this.$router.push('/articles/' + this.currentArticle.id);    
-     console.log('/articles/:' + this.currentArticle.id);    
+      this.currentIndex = index;       
+      this.$router.push('/articles/' + this.currentArticle.id);    
+     console.log('/articles/:' + this.currentArticle.id);  
+     console.log('article:', article.id)
     },      
     
     removeAllArticles() {
@@ -209,64 +93,7 @@ export default {
         .catch(e => {
           console.log(e);
         });
-    },   
-    deleteOneArticle() {
-      if ( confirm("Etes vous sur de vouloir supprimer cet article ?")) {
-        userService.delete(this.currentArticle.id)
-        .then(response => {
-            console.log(response.data);            
-            this.refreshList();           
-        })
-      }
-      else{
-           console.log("Vous avez annulé la demande");   
-      }
-    },
-    signalArticle(status) {      
-      const data = {       
-        signal: status
-      }; 
-       userService.update(this.currentArticle.id, data)
-      .then(response => {
-        console.log(response.data);   
-        if (this.currentArticle.signal) {
-        alert("Article désignalé");
-        }
-        else {
-          alert("Article signalé");
-        }
-        this.refreshList();   
-      })
-    },
-
-     signalComment(comment, status) {         
-          const data = {
-           signal: status,
-         }       
-      
-       userService.updateComment(comment, data)
-      .then(response => {
-        console.log(response.data);       
-        if (status) {          
-        alert("Commentaire signalé");
-        }
-        else {
-          alert("Commentaire désignalé");
-        }
-        this.refreshList();       
-
-      })
-    }, 
-                     
-    getComment(postId) {
-      userService.getAllComment(postId)
-      .then(response => {
-        this.comments = response.data;         
-      })
-      .catch(e => {
-        console.log(e);
-      })
-    }
+    },                
   },
 
   mounted() {

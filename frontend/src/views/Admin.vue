@@ -125,8 +125,7 @@ export default {
             articles:[],
             comments:[],
             currentArticle: null,
-            currentComment: null,
-            currentKey: -1
+            currentComment: null,           
         };
     },
     computed: {
@@ -134,13 +133,7 @@ export default {
             return this.$store.state.auth.user;
         }
     },
-    methods: {
-
-      setActiveComment(comment, key) {
-        this.currentComment = comment;
-        this.currentKey = key;
-        this.retrieveComments(comment.signal);        
-      },
+    methods: {   
 
       retrieveComments() {             
       userService.getAllCommentSignal(1)        
@@ -194,8 +187,7 @@ export default {
     signalComment(comment, status) {         
           const data = {
            signal: status,
-         }       
-      
+         };          
        userService.updateComment(comment, data)
       .then(response => {
         console.log(response.data);       

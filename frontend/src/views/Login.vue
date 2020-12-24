@@ -37,10 +37,8 @@
           >Le mot de passe est requis!</div>
         </div>
         <div class="form-group">
-          <button class="btn btn-primary btn-block" :disabled="loading">
-            <span v-show="loading" class="spinner-border spinner-border-sm"></span>
-            <span>Login</span>
-          </button>
+          <button type="submit" class="btn btn-primary btn-block">            
+            Login</button>
         </div>
         <div class="form-group">
           <div v-if="message" class="alert alert-danger" role="alert">{{message}}</div>
@@ -70,37 +68,28 @@ export default {
   },
  
   methods: {             
-         handleLogin() {
-      this.loading = true;
-      this.$validator.validateAll().then(isValid => {
-        if (!isValid) {
-          this.loading = false;
-          return;
-        }
-
-        if (this.user.email && this.user.password) {
-          this.$store.dispatch('auth/login', this.user).then(
-            () => {
-              this.$router.push('/home');
-          
-              console.log(this.user);
-            },
-            error => {
-              this.loading = false;
-              this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString();
-            }
-          );
-        }
-
-
-
-      });
-    }
-    
-  }
+         handleLogin() {   
+            this.$validator.validateAll().then(isValid => {
+              if (isValid) {              
+                 if (this.user.email && this.user.password) {
+                    this.$store.dispatch('auth/login', this.user).then(
+                      () => {
+                        this.$router.push('/home');
+                    
+                        console.log(this.user);
+                      },
+                      error => {          
+                        this.message =
+                          (error.response && error.response.data) ||
+                          error.message ||
+                          error.toString();
+                      }
+                    );
+                  }
+                }
+            });
+         }    
+     }
 };
 </script>
 

@@ -9,6 +9,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         createdAt: {
             type: Sequelize.DATE,
+            //formatage de la date et de l'heure
             get() {
                 return moment(this.getDataValue('createdAt')).format('DD/MM/YYYY HH:mm:ss');
             }
