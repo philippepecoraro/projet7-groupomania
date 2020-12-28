@@ -1,4 +1,5 @@
 import axios from 'axios';
+import authHeader from './auth-header';
 
 const API_URL = 'http://localhost:3000/api/auth/';
 
@@ -36,10 +37,11 @@ class AuthService {
         return axios.put(API_URL + 'signupdate/' + id, {
             firstname: user.firstname,
             lastname: user.lastname,
-        });
+        }, { headers: authHeader() });
     }
+
     deleteUser(id) {
-        return axios.delete(API_URL + id)
+        return axios.delete(API_URL + id, { headers: authHeader() });
     }
 }
 

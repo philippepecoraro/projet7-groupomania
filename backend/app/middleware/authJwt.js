@@ -1,6 +1,4 @@
 const jwt = require("jsonwebtoken");
-const db = require("../models");
-const User = db.user;
 const config = require("../config/auth.config");
 
 //Vérification du token
@@ -10,13 +8,13 @@ exports.verify = (req, res, next) => {
         const decodedToken = jwt.verify(token, config.secret);
         const userId = decodedToken.id;
         if (req.body.userId && req.body.userId !== userId) {
-            throw 'Invalid user ID';
+            throw 'User ID invalide';
         } else {
             next();
         }
     } catch {
         res.status(401).json({
-            error: new Error('Invalid request!')
+            error: new Error('Requête invalide!')
         });
     }
 };
@@ -33,7 +31,7 @@ exports.verifyAdmin = (req, res, next) => {
         }
     } catch {
         res.status(401).json({
-            error: new Error('Invalid request!')
+            error: new Error('Requête invalide!')
         });
     }
 };

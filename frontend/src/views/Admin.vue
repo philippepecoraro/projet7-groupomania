@@ -7,15 +7,8 @@
             <div class="col-lg-6">              
                 <div class="bloc">
                   <div class="text-center">
-                    <h2>Liste des commentaires signalés</h2>    
-                      <p>
-                        <button type="button" 
-                          class="btn btn-secondary"
-                          title="Cliquez pour afficher la liste des commentaires signalés"
-                          @click="retrieveComments">
-                          Commentaires
-                        </button>                
-                      </p>                   
+                    <div v-if="comments.length !== 0">
+                    <h2>Liste des commentaires signalés</h2>                                               
                       <ul class="list-group text-left">
                         <li class="list-group-item shadow-lg"
                           v-for="(comment, key) in comments"
@@ -51,21 +44,18 @@
                             </div>
                          </li>        
                       </ul>
+                    </div>
+                    <div v-else>
+                      <h2> Pas de commentaires signalés</h2>
+                    </div>
                    </div> 
                 </div>
             </div>        
               <div class="col-lg-6">
                  <div class="bloc">
                    <div class="text-center">
-                    <h2>Liste des Articles signalés</h2>
-                    <p>
-                      <button type="button" 
-                       class="btn btn-secondary"
-                       title="Cliquez pour afficher la liste des articles signalés" 
-                       @click="retrieveArticles">
-                      Articles
-                      </button>
-                    </p>
+                     <div v-if="articles.length !== 0">
+                    <h2>Liste des Articles signalés</h2>                  
                       <ul class="list-group text-left">
                         <li class="list-group-item shadow-lg"
                           v-for="(article, key) in articles"
@@ -107,7 +97,11 @@
                         </li>
                      </ul>
                   </div>
+                  <div v-else>
+                    <h2>Pas d'articles signalés</h2>
+                  </div> 
                  </div>
+                </div>
               </div>
           </div>
        </div> 
@@ -213,6 +207,11 @@ export default {
            console.log("Vous avez annulé la demande");   
       }
     },      
+   },
+
+   mounted() {
+     this.retrieveComments();
+     this.retrieveArticles();
    }
 };
 

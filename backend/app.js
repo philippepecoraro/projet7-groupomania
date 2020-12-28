@@ -1,13 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');
 const articleRoutes = require('./app/routes/article');
 const authRoutes = require('./app/routes/user');
 const commentRoutes = require('./app/routes/comment');
 const helmet = require('helmet');
-
-
-
 
 const app = express();
 
@@ -28,7 +24,6 @@ db.sequelize.sync();
 
 
 app.use(helmet());
-//app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/api/articles', articleRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/comment', commentRoutes);

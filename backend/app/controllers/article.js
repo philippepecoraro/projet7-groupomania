@@ -1,7 +1,7 @@
 const db = require("../models");
 const Article = db.article;
 const User = db.user;
-const Op = db.Sequelize.Op;
+
 
 // Créer et enregistrer un nouvel article
 exports.create = (req, res) => {
@@ -32,7 +32,7 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
     Article.findAll({ order: [['createdAt', 'DESC']], include: User })
         .then(data => {
-            res.send(data);
+            res.status(200).send(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -48,7 +48,7 @@ exports.findOne = (req, res) => {
 
     Article.findOne({ where: { id: id }, include: User })
         .then(data => {
-            res.send(data);
+            res.status(200).send(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -66,11 +66,11 @@ exports.update = (req, res) => {
     })
         .then(num => {
             if (num == 1) {
-                res.send({
+                res.status(201).send({
                     message: "L'article a été mis à jour avec succès."
                 });
             } else {
-                res.send({
+                res.status(400).send({
                     message: `Impossible de mettre à jour l'article avec  l'id=${id}.Peut-être que l'article n'a pas été trouvé ou que req.body est vide! !`
                 });
             }
@@ -92,11 +92,11 @@ exports.delete = (req, res) => {
     })
         .then(num => {
             if (num == 1) {
-                res.send({
+                res.status(200).send({
                     message: "L'article a été supprimé avec succès!"
                 });
             } else {
-                res.send({
+                res.status(400).send({
                     message: `Impossible de supprimer l'article avec l'identifiant=${id}.Peut-être que l'article n'a pas été trouvé !`
                 });
             }
@@ -115,7 +115,7 @@ exports.deleteAll = (req, res) => {
         truncate: false
     })
         .then(nums => {
-            res.send({ message: `${nums} L'article a été supprimé avec succès!` });
+            res.status(200).send({ message: `${nums} L'article a été supprimé avec succès!` });
         })
         .catch(err => {
             res.status(500).send({
@@ -131,7 +131,7 @@ exports.getSignalArticle = (req, res) => {
 
     Article.findAll({ where: condition, include: User })
         .then(data => {
-            res.send(data);
+            res.status(200).send(data);
         })
         .catch(err => {
             res.status(500).send({

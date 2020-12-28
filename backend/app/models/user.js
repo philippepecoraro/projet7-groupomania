@@ -11,7 +11,7 @@ module.exports = (sequelize, Sequelize) => {
             unique: {
                 args: true,
                 //Remplace le message standard
-                msg: 'Email déjà utilisé !'
+                msg: 'Email déjà utilisé!'
             }
         },
         password: {

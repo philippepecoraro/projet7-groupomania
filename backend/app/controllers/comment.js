@@ -28,7 +28,7 @@ exports.findAllComments = (req, res) => {
 
     Comment.findAll({ where: condition, include: User })
         .then(data => {
-            res.send(data);
+            res.status(200).send(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -47,11 +47,11 @@ exports.updateComment = (req, res) => {
     })
         .then(num => {
             if (num == 1) {
-                res.send({
+                res.status(201).send({
                     message: "Commentaire mis a jour avec succès."
                 });
             } else {
-                res.send({
+                res.status(400).send({
                     message: `Impossible de mettre à jour le commentaire avec l'ID=${id}. Peut-être que le commentaire n'a pas été trouvé ou que req.body est vide!`
                 });
             }
@@ -69,7 +69,7 @@ exports.getSignalComment = (req, res) => {
 
     Comment.findAll({ where: condition, include: User })
         .then(data => {
-            res.send(data);
+            res.status(200).send(data);
         })
         .catch(err => {
             res.status(500).send({
@@ -88,11 +88,11 @@ exports.deleteComment = (req, res) => {
     })
         .then(num => {
             if (num == 1) {
-                res.send({
+                res.status(200).send({
                     message: "Commentaire supprimé avec succès!"
                 });
             } else {
-                res.send({
+                res.status(400).send({
                     message: `Impossible de supprimer le  commentaire avec id=${id}. Peut-être que le commentaire n'a pas été trouvé!`
                 });
             }

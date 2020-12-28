@@ -1,10 +1,10 @@
 <template>
   <div class="container">
-    <div class="col-md-12">
-      <h1 class="text-center">Inscrivez vous</h1>
+    <div class="col-md-12">    
       <div class="card card-container">     
         <form name="form" @submit.prevent="handleRegister">
           <div v-if="!successful">
+            <h1>Inscrivez vous</h1>
             <div class="form-group">
               <label for="firstname">Prénom</label>
               <input
@@ -81,7 +81,7 @@
         <div v-if="message"
           class="alert text-center"          
           :class="{'alert-success': successful, 'alert-danger': !successful}">
-          {{ message}} Veuillez vous connecter
+          {{ message}} 
         </div>
       </div>
     </div>
@@ -124,7 +124,7 @@ export default {
               this.message = data.message;
               console.log('this.message:', this.message)
               this.successful = true;
-              alert('Utilisateur crée');             
+              alert('Utilisateur crée. Veuillez vous connecter');             
             },
             error => {
               this.message =
@@ -176,6 +176,9 @@ label {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
+}
+h1 {
+  margin-bottom: 40px;
 }
 
 </style>

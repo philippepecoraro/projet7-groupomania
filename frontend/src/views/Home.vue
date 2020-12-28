@@ -7,7 +7,7 @@
             <div class="col-md-12">  
               <div class="bloc">         
                 <h1>Liste des Articles</h1> 
-                  <p>Click sur un article...</p>
+                  <p v-if="articles.length !== 0"><strong>Clickez sur un article pouer voir son contenu</strong></p>
                     <ul class="list-group text-left">                     
                       <li class="list-group-item shadow-lg"           
                         v-for="(article, index) in articles"
@@ -27,12 +27,14 @@
                             <p> {{ article.description}} </p>                          
                           </div>                                                                             
                       </li>                      
-                    </ul>                         
+                    </ul>      
+                      <div v-if="articles.length !== 0">                   
                         <button v-if="currentUser.isAdmin" 
                         class="m-3 btn btn-sm btn-danger"
                          @click="removeAllArticles">
                           Supprimez tous les articles
-                        </button>                                                              
+                        </button> 
+                      </div>                                                             
               </div> 
             </div>        
           </div>      
@@ -85,6 +87,7 @@ export default {
     },      
     
     removeAllArticles() {
+      if ( confirm("Etes-vous sur de vouloir supprimer tous les articles ?")) {
       userService.deleteAll()
         .then(response => {
           console.log("responseRemove:" ,response.data);
@@ -93,6 +96,10 @@ export default {
         .catch(e => {
           console.log(e);
         });
+    }
+    else {
+        console.log("Vous avez annulé la demande");
+    }
     },                
   },
 

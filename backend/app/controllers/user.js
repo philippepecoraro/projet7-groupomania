@@ -5,7 +5,7 @@ var bcrypt = require("bcryptjs");
 require('dotenv').config();
 const User = db.user;
 
-
+//Création utilisateur
 exports.signup = (req, res) => {
     if (req.body.firstname !== "" && req.body.lastname !== "" && req.body.email !== "" && req.body.password !== "") {
         User.create({
@@ -26,7 +26,7 @@ exports.signup = (req, res) => {
         res.status(400).json({ error: "Contenu vide" });
     }
 };
-
+//Login utilisateur
 exports.signin = (req, res) => {
     User.findOne({
         where: {
@@ -67,7 +67,7 @@ exports.signin = (req, res) => {
             res.status(500).send({ message: err.message });
         });
 };
-
+//Edition prénom et nom utilisateur
 exports.signupdate = (req, res) => {
     if (req.body.firstname !== "" && req.body.lastname !== "") {
         const id = req.params.id;
@@ -94,7 +94,7 @@ exports.signupdate = (req, res) => {
         res.status(400).json({ error: "Contenu vide" });
     }
 };
-
+//Suppression compte utilisateur
 exports.delete = (req, res) => {
     const id = req.params.id;
 
@@ -103,11 +103,11 @@ exports.delete = (req, res) => {
     })
         .then(num => {
             if (num == 1) {
-                res.send({
+                res.status(200).send({
                     message: "Utilisateur supprimé avec succès!"
                 });
             } else {
-                res.send({
+                res.status(400).send({
                     message: `Impossible de supprimer l'utilisateur avec id=${id}. Peut-être que l'utilisateur n'a pas été trouvé!`
                 });
             }
